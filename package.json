@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node copy-images.mjs",
+    "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "electron": "electron .",
@@ -82,5 +82,8 @@
       "target": "dmg",
       "category": "public.app-category.business"
     }
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
