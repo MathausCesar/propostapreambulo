@@ -1,6 +1,7 @@
 {
   "name": "proposta-frontend",
   "version": "0.1.0",
+  "type": "module",
   "description": "Sistema de Propostas Comerciais - Preâmbulo",
   "main": "electron.js",
   "homepage": "./",

@@ -25,3 +25,6 @@ Thumbs.db
 
 # Electron
 out/
+
+# Config files antigos
+*.cjs
