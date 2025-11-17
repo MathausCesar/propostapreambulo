@@ -22,7 +22,7 @@ function getOfficeInclusions(tier: PackageTier) {
         users: 5,
         publications: 3,
         monitoring: 500,
-        docs: 5,
+        docs: 0, // Docs sempre cobrados por pacotes separados
         financeIncluded: false,
       };
     case "PRO":
@@ -30,7 +30,7 @@ function getOfficeInclusions(tier: PackageTier) {
         users: 10,
         publications: 5,
         monitoring: 1000,
-        docs: 10,
+        docs: 0, // Docs sempre cobrados por pacotes separados
         financeIncluded: true,
       };
     case "INFINITE":
@@ -38,7 +38,7 @@ function getOfficeInclusions(tier: PackageTier) {
         users: 20,
         publications: 20,
         monitoring: 1500,
-        docs: 10,
+        docs: 0, // Docs sempre cobrados por pacotes separados
         financeIncluded: true,
       };
     default:
@@ -59,14 +59,6 @@ function getMonitoringUnitPrice(credits: number): number {
   if (credits <= 1000) return 0.2;
   if (credits <= 2000) return 0.15;
   return 0.12;
-}
-
-function getDocsUnitPrice(docs: number): number {
-  if (docs <= 0) return 0;
-  if (docs <= 10) return 7.5;
-  if (docs <= 50) return 6.5;
-  if (docs <= 100) return 5.5;
-  return 5.0;
 }
 
 function getDistributionUnitPrice(processes: number): number {
@@ -174,20 +166,46 @@ export function calculateOfficePricing(
     });
   }
 
-  // Documentos IA – incluídos + excedentes com tabela dinâmica
+  // Documentos IA – cobrança por pacotes completos (regra corrigida)
   const requestedDocs = Math.max(0, form.officeAiDocs || 0);
-  const docsIncluded = inclusions.docs;
-  const docsExtra = Math.max(0, requestedDocs - docsIncluded);
-  const docsUnitPrice = getDocsUnitPrice(requestedDocs);
-  const docsValue = docsExtra * docsUnitPrice;
+  
+  if (requestedDocs > 0) {
+    // Determinar o pacote baseado no volume solicitado
+    let packageName = "";
+    let monthlyLimit = 0;
+    let yearlyLimit = 0;
+    let unitPrice = 0;
+    
+    if (requestedDocs <= 10) {
+      packageName = "Pacote 10 docs/mês";
+      monthlyLimit = 10;
+      yearlyLimit = 120;
+      unitPrice = 7.50;
+    } else if (requestedDocs <= 50) {
+      packageName = "Pacote 50 docs/mês";
+      monthlyLimit = 50;
+      yearlyLimit = 600;
+      unitPrice = 6.50;
+    } else if (requestedDocs <= 100) {
+      packageName = "Pacote 100 docs/mês";
+      monthlyLimit = 100;
+      yearlyLimit = 1200;
+      unitPrice = 5.50;
+    } else {
+      packageName = `Pacote ${requestedDocs} docs/mês`;
+      monthlyLimit = requestedDocs;
+      yearlyLimit = requestedDocs * 12;
+      unitPrice = 5.00;
+    }
 
-  if (docsExtra > 0) {
+    const monthlyValue = requestedDocs * unitPrice;
+
     items.push({
-      id: "ai-docs-extra",
-      label: "Documentos IA excedentes",
-      quantity: docsExtra,
-      unitPrice: docsUnitPrice,
-      monthlyValue: docsValue,
+      id: "ai-docs-package",
+      label: `${packageName} (máx ${yearlyLimit}/ano)`,
+      quantity: requestedDocs,
+      unitPrice: unitPrice,
+      monthlyValue: monthlyValue,
     });
   }
 
