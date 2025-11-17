@@ -67,6 +67,7 @@ const emptyForm: ProposalFormState = {
   firstPaymentDate: "",
   firstMonthlyDate: "",
   proposalValidityDays: 30,
+  proposalValidityDate: "",
   paymentConditions: "",
   observations: "",
   extraServices: [],

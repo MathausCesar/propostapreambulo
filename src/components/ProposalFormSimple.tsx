@@ -24,6 +24,9 @@ interface ProposalFormProps {
 const fieldClass =
   "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 text-white placeholder-blue-300/50 backdrop-blur-sm transition-all duration-300 hover:bg-white/15";
 
+const selectClass =
+  "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-400 text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/15";
+
 export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
   formState,
   onChange,
@@ -290,15 +293,19 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
             <div>
               <label className="block text-sm font-semibold text-blue-200 mb-2">Tipo de Migração</label>
               <select
-                className={fieldClass}
+                className={selectClass}
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  color: 'white'
+                }}
                 value={formState.migrationType}
                 onChange={onChange("migrationType")}
               >
-                <option value="NONE">Sem Migração</option>
-                <option value="PLANILHA_PADRAO">Planilha Padrão (Cortesia)</option>
-                <option value="DISCOVERY">Discovery</option>
-                <option value="PLANILHA_PERSONALIZADA">Planilha Personalizada</option>
-                <option value="BACKUP_SISTEMA">Backup de Sistema</option>
+                <option value="NONE" style={{backgroundColor: '#1e293b', color: 'white'}}>Sem Migração</option>
+                <option value="PLANILHA_PADRAO" style={{backgroundColor: '#1e293b', color: 'white'}}>Planilha Padrão (Cortesia)</option>
+                <option value="DISCOVERY" style={{backgroundColor: '#1e293b', color: 'white'}}>Discovery</option>
+                <option value="PLANILHA_PERSONALIZADA" style={{backgroundColor: '#1e293b', color: 'white'}}>Planilha Personalizada</option>
+                <option value="BACKUP_SISTEMA" style={{backgroundColor: '#1e293b', color: 'white'}}>Backup de Sistema</option>
               </select>
             </div>
             {formState.migrationType === "DISCOVERY" && (
@@ -483,17 +490,26 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
       {/* SEXTO BLOCO - Validade da Proposta */}
       <div>
         <h3 className="text-white font-black text-xl mb-4">Validade da Proposta</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-blue-200 mb-2">Válida por (dias)</label>
+            <label className="block text-sm font-semibold text-blue-200 mb-2">Válida até</label>
+            <input
+              className={fieldClass}
+              type="date"
+              value={formState.proposalValidityDate || ''}
+              onChange={onChange("proposalValidityDate")}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-blue-200 mb-2">Ou válida por (dias)</label>
             <input
               className={fieldClass}
               type="number"
               min={1}
               max={365}
-              value={formState.proposalValidityDays || 30}
+              value={formState.proposalValidityDays || ''}
               onChange={onChange("proposalValidityDays")}
-              placeholder="30"
+              placeholder="Ex: 30"
             />
           </div>
         </div>

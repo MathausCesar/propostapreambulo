@@ -232,7 +232,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                   <div><strong>Telefone:</strong> {consultantProfile?.phone || "-"}</div>
                   <div><strong>E-mail:</strong> {consultantProfile?.email || "comercial@preambulo.com.br"}</div>
                   <div><strong>Data:</strong> {new Date().toLocaleDateString("pt-BR")}</div>
-                  <div><strong>Válida por:</strong> {formState.proposalValidityDays || 30} dias</div>
+                  <div><strong>Válida por:</strong> {formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</div>
                 </div>
               </div>
             </div>
@@ -558,7 +558,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               <div className="text-sm space-y-2">
                 <div><span className="text-slate-600">Data de Pagamento:</span> <strong>{formState.firstPaymentDate ? formatDate(formState.firstPaymentDate) : "-"}</strong></div>
                 <div><span className="text-slate-600">Parcelas:</span> <strong>{formState.setupInstallments || 1}x</strong></div>
-                <div><span className="text-slate-600">Desconto:</span> <strong>{formState.setupDiscountValue ? `${formState.setupDiscountValue}%` : "Sem desconto"}</strong></div>
+                {formState.setupDiscountValue && <div><span className="text-slate-600">Desconto:</span> <strong>{formState.setupDiscountValue}%</strong></div>}
                 <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
                   <div>Valor total: <strong className="text-slate-700">{formatCurrency(setupTotal)}</strong></div>
                   {(formState.setupInstallments || 1) > 1 && (
@@ -571,7 +571,9 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Mensalidade</h3>
               <div className="text-sm space-y-2">
                 <div><span className="text-slate-600">Início da Cobrança:</span> <strong>{formState.firstMonthlyDate ? formatDate(formState.firstMonthlyDate) : "-"}</strong></div>
-                <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formState.discountType === "VALUE" && formState.discountValue ? formatCurrency(formState.discountValue) : "Sem desconto"}</strong></div>
+                {(formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue) ? (
+                  <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
+                ) : null}
                 <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
                   <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
                   <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>

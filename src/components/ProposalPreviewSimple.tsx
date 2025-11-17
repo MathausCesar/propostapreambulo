@@ -495,12 +495,14 @@ export default function ProposalPreviewSimple({
                 <span className="text-slate-600">Parcelas:</span>{" "}
                 <strong className="text-slate-900">{formState.setupInstallments || 1}x</strong>
               </p>
-              <p>
-                <span className="text-slate-600">Desconto:</span>{" "}
-                <strong className="text-slate-900">
-                  {formState.setupDiscountValue ? `${formState.setupDiscountValue}%` : "Sem desconto"}
-                </strong>
-              </p>
+              {formState.setupDiscountValue && (
+                <p>
+                  <span className="text-slate-600">Desconto:</span>{" "}
+                  <strong className="text-slate-900">
+                    {formState.setupDiscountValue}%
+                  </strong>
+                </p>
+              )}
             </div>
           </div>
           <div className="bg-slate-50 p-4 rounded-lg">
@@ -512,16 +514,16 @@ export default function ProposalPreviewSimple({
                   {formState.firstMonthlyDate ? formatDate(formState.firstMonthlyDate) : "-"}
                 </strong>
               </p>
-              <p>
-                <span className="text-slate-600">Desconto:</span>{" "}
-                <strong className="text-slate-900">
-                  {formState.discountType === "PERCENT" && formState.discountValue
-                    ? `${formState.discountValue}%`
-                    : formState.discountType === "VALUE" && formState.discountValue
-                    ? formatCurrency(formState.discountValue)
-                    : "Sem desconto"}
-                </strong>
-              </p>
+              {((formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue)) && (
+                <p>
+                  <span className="text-slate-600">Desconto:</span>{" "}
+                  <strong className="text-slate-900">
+                    {formState.discountType === "PERCENT" && formState.discountValue
+                      ? `${formState.discountValue}%`
+                      : formatCurrency(formState.discountValue)}
+                  </strong>
+                </p>
+              )}
             </div>
           </div>
         </div>

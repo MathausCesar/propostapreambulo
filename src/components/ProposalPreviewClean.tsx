@@ -44,7 +44,7 @@ const ProposalPreviewClean: React.FC<Props> = ({ formState }) => {
           </section>
         )}
 
-        <footer className="text-xs text-slate-600 mt-8">Validade da proposta: 30 dias</footer>
+        <footer className="text-xs text-slate-600 mt-8">Validade da proposta: {formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</footer>
       </div>
     </aside>
   );
