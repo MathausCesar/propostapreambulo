@@ -97,7 +97,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeUsers || 0}
+                  value={formState.officeUsers || ''}
                   onChange={onChange("officeUsers")}
                   placeholder="Qtd de usuários"
                 />
@@ -108,7 +108,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officePublications || 0}
+                  value={formState.officePublications || ''}
                   onChange={onChange("officePublications")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 30,00 por termo</div>
@@ -118,7 +118,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeIntimation || 0}
+                  value={formState.officeIntimation || ''}
                   onChange={onChange("officeIntimation")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 60,00 por painel</div>
@@ -128,7 +128,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeMonitoringCredits || 0}
+                  value={formState.officeMonitoringCredits || ''}
                   onChange={onChange("officeMonitoringCredits")}
                   placeholder="Créditos/mês"
                 />
@@ -139,7 +139,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeDistributionProcesses || 0}
+                  value={formState.officeDistributionProcesses || ''}
                   onChange={onChange("officeDistributionProcesses")}
                   placeholder="Processos/mês"
                 />
@@ -150,7 +150,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeProtocols || 0}
+                  value={formState.officeProtocols || ''}
                   onChange={onChange("officeProtocols")}
                   placeholder="Protocolos/mês"
                 />
@@ -161,7 +161,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.officeAiDocs || 0}
+                  value={formState.officeAiDocs || ''}
                   onChange={onChange("officeAiDocs")}
                   placeholder="Docs/mês"
                 />
@@ -189,7 +189,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cUsers || 0}
+                  value={formState.cpj3cUsers || ''}
                   onChange={onChange("cpj3cUsers")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 106,00 por usuário</div>
@@ -199,7 +199,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cPublications || 0}
+                  value={formState.cpj3cPublications || ''}
                   onChange={onChange("cpj3cPublications")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 80,00 por termo</div>
@@ -209,7 +209,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cMonitoringCredits || 0}
+                  value={formState.cpj3cMonitoringCredits || ''}
                   onChange={onChange("cpj3cMonitoringCredits")}
                 />
                 <div className="text-xs text-blue-300 mt-1">Pacote calculado automaticamente</div>
@@ -219,7 +219,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cDistributionProcesses || 0}
+                  value={formState.cpj3cDistributionProcesses || ''}
                   onChange={onChange("cpj3cDistributionProcesses")}
                 />
                 <div className="text-xs text-blue-300 mt-1">Pacote calculado automaticamente</div>
@@ -229,7 +229,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cProtocols || 0}
+                  value={formState.cpj3cProtocols || ''}
                   onChange={onChange("cpj3cProtocols")}
                 />
                 <div className="text-xs text-blue-300 mt-1">Pacote calculado automaticamente</div>
@@ -239,7 +239,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cAiDocs || 0}
+                  value={formState.cpj3cAiDocs || ''}
                   onChange={onChange("cpj3cAiDocs")}
                 />
                 <div className="text-xs text-blue-300 mt-1">Pacote calculado automaticamente</div>
@@ -249,7 +249,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.cpj3cConsultingHours || 0}
+                  value={formState.cpj3cConsultingHours || ''}
                   onChange={onChange("cpj3cConsultingHours")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 225,00 por hora</div>
@@ -269,7 +269,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
               <input
                 className={fieldClass}
                 type="number"
-                value={formState.setupFee || 0}
+                value={formState.setupFee || ''}
                 onChange={onChange("setupFee")}
                 placeholder="0,00"
               />
@@ -307,7 +307,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.migrationProcesses || 0}
+                  value={formState.migrationProcesses || ''}
                   onChange={onChange("migrationProcesses")}
                 />
                 <div className="text-xs text-blue-300 mt-1">Cortesia até 2000, depois R$ 0,25/processo</div>
@@ -319,7 +319,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.migrationHours || 0}
+                  value={formState.migrationHours || ''}
                   onChange={onChange("migrationHours")}
                 />
                 <div className="text-xs text-blue-300 mt-1">R$ 225,00 por hora</div>
@@ -371,7 +371,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.setupDiscountValue || 0}
+                  value={formState.setupDiscountValue || ''}
                   onChange={onChange("setupDiscountValue")}
                   placeholder="0"
                 />
@@ -408,7 +408,7 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
                 <input
                   className={fieldClass}
                   type="number"
-                  value={formState.discountValue || 0}
+                  value={formState.discountValue || ''}
                   onChange={onChange("discountValue")}
                   placeholder="0"
                 />
@@ -480,7 +480,26 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
         )}
       </div>
 
-      {/* SEXTO BLOCO - Observações */}
+      {/* SEXTO BLOCO - Validade da Proposta */}
+      <div>
+        <h3 className="text-white font-black text-xl mb-4">Validade da Proposta</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-blue-200 mb-2">Válida por (dias)</label>
+            <input
+              className={fieldClass}
+              type="number"
+              min={1}
+              max={365}
+              value={formState.proposalValidityDays || 30}
+              onChange={onChange("proposalValidityDays")}
+              placeholder="30"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* SÉTIMO BLOCO - Observações */}
       <div>
         <h3 className="text-white font-black text-xl mb-2">Observações</h3>
         <textarea

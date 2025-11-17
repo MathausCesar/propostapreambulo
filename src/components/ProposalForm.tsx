@@ -143,7 +143,7 @@ export const ProposalForm: React.FC<ProposalFormProps> = ({
           {formState.migrationType === "OAB" && (
             <div>
               <label className="block text-sm font-semibold text-blue-200 mb-2">Qtde. de Processos</label>
-              <input className={fieldClass} type="number" value={formState.migrationProcesses || 0} onChange={onChange("migrationProcesses")} />
+              <input className={fieldClass} type="number" value={formState.migrationProcesses || ''} onChange={onChange("migrationProcesses")} />
             </div>
           )}
         </div>
@@ -177,7 +177,7 @@ export const ProposalForm: React.FC<ProposalFormProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
               <div>
                 <label className="block text-sm font-semibold text-blue-200 mb-2">Horas de Consultoria</label>
-                <input className={fieldClass} type="number" value={formState.officeConsultingHours || 0} onChange={onChange("officeConsultingHours")} />
+                <input className={fieldClass} type="number" value={formState.officeConsultingHours || ''} onChange={onChange("officeConsultingHours")} />
               </div>
             </div>
           </div>

@@ -25,6 +25,7 @@ export interface ProposalFormState {
   discountValue: number;
   firstPaymentDate: string;       // yyyy-mm-dd
   firstMonthlyDate: string;       // yyyy-mm-dd
+  proposalValidityDays: number;   // validade da proposta em dias
   paymentConditions: string;      // texto livre
   observations: string;           // texto livre
   extraServices: ExtraService[];

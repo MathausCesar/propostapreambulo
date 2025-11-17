@@ -232,6 +232,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                   <div><strong>Telefone:</strong> {consultantProfile?.phone || "-"}</div>
                   <div><strong>E-mail:</strong> {consultantProfile?.email || "comercial@preambulo.com.br"}</div>
                   <div><strong>Data:</strong> {new Date().toLocaleDateString("pt-BR")}</div>
+                  <div><strong>Válida por:</strong> {formState.proposalValidityDays || 30} dias</div>
                 </div>
               </div>
             </div>
@@ -621,7 +622,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </div>
           <p className="text-xs text-slate-500">Documento eletrônico • Preâmbulo Informática • {new Date().toLocaleDateString("pt-BR")}</p>
           <div className="text-xs text-blue-600 mt-2">
-            🌐 www.preambulo.com.br | 📞 (11) 3042-0271 | 📧 comercial@preambulo.com.br
+            📍 R. Padre Anchieta, 2224, Bigorrilho – Curitiba/PR – 80730-000<br/>
+            📞 (41) 3322-1910 | 📧 comercial@preambulo.com.br
           </div>
         </footer>
       </div>
