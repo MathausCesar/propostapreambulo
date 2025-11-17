@@ -3,10 +3,10 @@ import type { ProposalFormState } from "../types";
 import * as pricingRules from "../utils/pricingRules";
 
 // Usar caminhos diretos para Electron
-const officeImg = './office.png';
-const threeCPlusImg = './3cplus.png';
-const cobrancaImg = './cobranca.png';
-const preambutoImg = './preambulo.png';
+const officeImg = '/office.png';
+const threeCPlusImg = '/3cplus.png';
+const cobrancaImg = '/cobranca.png';
+const preambutoImg = '/preambulo.png';
 
 import {
   getPlanPrice,

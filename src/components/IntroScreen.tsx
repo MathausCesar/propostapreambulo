@@ -2,8 +2,8 @@ import React from 'react';
 import AnimatedBackground from './AnimatedBackground';
 
 // Usar caminhos diretos para Electron
-const iconeImg = './icone.png';
-const preambutoImg = './preambulo.png';
+const iconeImg = '/icone.png';
+const preambutoImg = '/preambulo.png';
 
 interface IntroScreenProps {
     onStart: () => void;

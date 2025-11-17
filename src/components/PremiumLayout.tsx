@@ -2,7 +2,7 @@ import React from "react";
 import AnimatedBackground from "./AnimatedBackground";
 
 // Usar caminho direto para Electron
-const iconeImg = './icone.png';
+const iconeImg = '/icone.png';
 
 interface PremiumLayoutProps {
   children: React.ReactNode;

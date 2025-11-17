@@ -12,9 +12,9 @@ import {
 } from "./types";
 
 // Usar caminhos diretos para Electron
-const officeImg = './office.png';
-const threeCPlusImg = './3cplus.png';
-const cobrancaImg = './cobranca.png';
+const officeImg = '/office.png';
+const threeCPlusImg = '/3cplus.png';
+const cobrancaImg = '/cobranca.png';
 
 import { ProposalFormSimple } from "./components/ProposalFormSimple";
 import ProposalPreviewEnterprise from "./components/ProposalPreviewEnterprise";
