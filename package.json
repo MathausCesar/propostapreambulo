@@ -1,0 +1,86 @@
+{
+  "name": "proposta-frontend",
+  "version": "0.1.0",
+  "description": "Sistema de Propostas Comerciais - Preâmbulo",
+  "main": "electron.js",
+  "homepage": "./",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node copy-images.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "build-electron": "npm run build && electron .",
+    "dist": "npm run build && electron-builder",
+    "dist-win": "npm run build && electron-builder --win",
+    "dist-all": "npm run build && electron-builder --win --linux --mac"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
+    "lucide-react": "^0.553.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.14",
+    "concurrently": "^7.6.0",
+    "electron": "^39.2.1",
+    "electron-builder": "^26.0.12",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.2.2",
+    "vite": "^7.2.2",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.preambulo.propostas",
+    "productName": "Sistema de Propostas - Preâmbulo",
+    "directories": {
+      "output": "dist-electron",
+      "buildResources": "public"
+    },
+    "files": [
+      "dist/**/*",
+      "electron.js",
+      "package.json",
+      "public/**/*",
+      "*.png"
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": "public"
+      },
+      {
+        "from": "public/*.png",
+        "to": "."
+      }
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "public/icone.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Propostas Preâmbulo",
+      "uninstallDisplayName": "Sistema de Propostas - Preâmbulo"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Office"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.business"
+    }
+  }
+}

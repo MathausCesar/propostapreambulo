@@ -1,0 +1,27 @@
+node_modules
+
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.temp
+*.zip
+*.mjs
+*.bat
+
+# Electron
+out/

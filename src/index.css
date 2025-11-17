@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos básicos */
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: theme("colors.gray.50");
+}
+
+/* Pequenos ajustes para inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Estilos para impressão - Layout A4 */
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Esconde todo o app exceto o preview A4 */
+  #root > * {
+    display: none !important;
+  }
+
+  /* Mostra apenas o card de proposta */
+  #quote {
+    display: block !important;
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    width: 190mm !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    page-break-after: avoid !important;
+    overflow: visible !important;
+  }
+
+  /* Garante que tabelas não quebram de forma feia */
+  table {
+    page-break-inside: avoid !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  /* Seções inteiras sem quebra */
+  div[className*="space-y-"] {
+    page-break-inside: avoid !important;
+  }
+
+  /* Remove espaçamento do print */
+  #quote > div {
+    margin: 0 !important;
+  }
+}
