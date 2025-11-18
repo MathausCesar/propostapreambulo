@@ -354,6 +354,30 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                               <strong className="text-blue-800">{inclusions.storage} GB</strong>
                             </div>
                           )}
+                          {isCpj && 'agentTokens' in inclusions && (
+                            <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
+                              <span>• Tokens de Agente IA:</span>
+                              <strong className="text-blue-800">{(inclusions.agentTokens || 0).toLocaleString()}</strong>
+                            </div>
+                          )}
+                          {isCpj && 'financeAdvancedIncluded' in inclusions && (
+                            <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
+                              <span>• Financeiro Avançado:</span>
+                              <strong className="text-blue-800">{inclusions.financeAdvancedIncluded ? 'Incluído' : 'Padrão'}</strong>
+                            </div>
+                          )}
+                          {isCpj && (
+                            <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
+                              <span>• Boletos/mês:</span>
+                              <strong className="text-blue-800">Ilimitados</strong>
+                            </div>
+                          )}
+                          {isCpj && (
+                            <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
+                              <span>• Conta Digital Preâmbulo Bank:</span>
+                              <strong className="text-blue-800">Incluída</strong>
+                            </div>
+                          )}
                           {isCpj && 'unlimitedProcesses' in inclusions && (
                             <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
                               <span>• Processos:</span>
