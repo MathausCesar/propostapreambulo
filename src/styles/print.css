@@ -111,6 +111,22 @@
     min-height: 120px !important;
   }
 
+  /* Seção de assinaturas - manter junto com footer */
+  .signature-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Grupo de assinatura + footer como bloco único */
+  .signature-section + .footer-section {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    margin-top: 10px !important;
+  }
+
   /* Ajustes específicos para impressão */
   .print-adjust {
     font-size: 11px !important;

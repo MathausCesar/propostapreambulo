@@ -627,8 +627,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </section>
         )}
 
-        {/* 8. Assinaturas */}
-        <section className="pt-4">
+        {/* 8. Assinaturas - Manter junto com footer */}
+        <section className="pt-4 no-page-break signature-section">
           <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 flex items-center gap-2">
             ✍️ Aceite da Proposta
           </h3>
@@ -648,8 +648,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="footer-section text-center">
+        {/* Footer - Manter junto com assinaturas */}
+        <footer className="footer-section text-center no-page-break">
           <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg p-4 mb-4 force-print-colors print-clean">
             <div className="text-sm font-bold mb-1">⚡ Oferta por tempo limitado!</div>
             <div className="text-xs">Confirme sua proposta em até 30 dias e ganhe 1 mês de cortesia</div>

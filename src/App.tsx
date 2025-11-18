@@ -381,6 +381,22 @@ const App: React.FC = () => {
             margin: 0 auto !important;
             padding: 20px !important;
           }
+          /* Manter assinatura e footer juntos */
+          .signature-section {
+            page-break-inside: avoid !important;
+            page-break-after: avoid !important;
+            break-inside: avoid !important;
+            break-after: avoid !important;
+          }
+          .footer-section {
+            page-break-before: avoid !important;
+            page-break-inside: avoid !important;
+            break-before: avoid !important;
+            break-inside: avoid !important;
+          }
+          .signature-section + .footer-section {
+            margin-top: 10px !important;
+          }
           @page { 
             margin: 0.5in; 
             size: A4 portrait; 
@@ -1119,6 +1135,22 @@ const handleChange =
                           max-width: none !important;
                           margin: 0 auto !important;
                           padding: 20px !important;
+                        }
+                        /* Manter assinatura e footer juntos */
+                        .signature-section {
+                          page-break-inside: avoid !important;
+                          page-break-after: avoid !important;
+                          break-inside: avoid !important;
+                          break-after: avoid !important;
+                        }
+                        .footer-section {
+                          page-break-before: avoid !important;
+                          page-break-inside: avoid !important;
+                          break-before: avoid !important;
+                          break-inside: avoid !important;
+                        }
+                        .signature-section + .footer-section {
+                          margin-top: 10px !important;
                         }
                         @page { 
                           margin: 0.5in; 
