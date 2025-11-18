@@ -127,6 +127,28 @@
     margin-top: 10px !important;
   }
 
+  /* Seção de resumo do pacote - evitar quebra entre título e conteúdo */
+  .package-summary-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .package-summary-section h2 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .no-page-break-before {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  .no-page-break-after {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
   /* Ajustes específicos para impressão */
   .print-adjust {
     font-size: 11px !important;

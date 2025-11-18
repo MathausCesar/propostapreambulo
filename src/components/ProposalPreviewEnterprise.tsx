@@ -304,9 +304,9 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
 
         {/* 3. Resumo do Pacote e Exceedências */}
         {selectedTier && (isOffice || isCpj) && (
-          <section className="mb-8">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4">📋 3. Resumo do Pacote</h2>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-4">
+          <section className="mb-8 no-page-break package-summary-section">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 no-page-break-after">📋 3. Resumo do Pacote</h2>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-4 no-page-break-before">{}
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-1">📋 Itens Inclusos no Pacote {selectedTier}</h3>

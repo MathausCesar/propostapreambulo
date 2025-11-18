@@ -397,6 +397,23 @@ const App: React.FC = () => {
           .signature-section + .footer-section {
             margin-top: 10px !important;
           }
+          /* Evitar quebra no tópico 3 */
+          .package-summary-section {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          .package-summary-section h2 {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+          .no-page-break-before {
+            page-break-before: avoid !important;
+            break-before: avoid !important;
+          }
+          .no-page-break-after {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
           @page { 
             margin: 0.5in; 
             size: A4 portrait; 
@@ -1151,6 +1168,23 @@ const handleChange =
                         }
                         .signature-section + .footer-section {
                           margin-top: 10px !important;
+                        }
+                        /* Evitar quebra no tópico 3 */
+                        .package-summary-section {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                        }
+                        .package-summary-section h2 {
+                          page-break-after: avoid !important;
+                          break-after: avoid !important;
+                        }
+                        .no-page-break-before {
+                          page-break-before: avoid !important;
+                          break-before: avoid !important;
+                        }
+                        .no-page-break-after {
+                          page-break-after: avoid !important;
+                          break-after: avoid !important;
                         }
                         @page { 
                           margin: 0.5in; 
