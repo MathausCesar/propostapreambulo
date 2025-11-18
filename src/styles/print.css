@@ -1,0 +1,152 @@
+/* Estilos específicos para impressão e geração de PDF */
+@media print, screen {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Container principal */
+  .proposal-container {
+    width: 210mm !important;
+    margin: 0 auto !important;
+    background: white !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Margens adequadas para A4 */
+  .print-margin {
+    margin: 15mm 20mm !important;
+    padding: 0 !important;
+  }
+
+  /* Quebras de página controladas */
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .page-break-after {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .no-page-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .no-page-break-before {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+  }
+
+  /* Header sempre junto */
+  .header-section {
+    position: relative;
+    margin-bottom: 20px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Seções que devem ficar juntas */
+  .section-together {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* Tabelas */
+  .investment-table {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .investment-table th,
+  .investment-table td {
+    padding: 8px 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    text-align: left !important;
+  }
+
+  .investment-table th {
+    background-color: #f1f5f9 !important;
+    font-weight: bold !important;
+  }
+
+  /* Seção de investimento sempre em nova página */
+  .investment-section {
+    page-break-before: always !important;
+    break-before: page !important;
+    margin-top: 0 !important;
+    padding-top: 20px !important;
+  }
+
+  /* Footer sempre no final */
+  .footer-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-top: 30px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding-top: 15px !important;
+  }
+
+  /* Ajustes específicos para impressão */
+  .print-adjust {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Remove sombras e efeitos visuais */
+  .print-clean {
+    box-shadow: none !important;
+    border-radius: 4px !important;
+  }
+
+  /* Espaçamentos reduzidos para impressão */
+  .print-compact {
+    padding: 10px 15px !important;
+    margin: 10px 0 !important;
+  }
+
+  /* Títulos de seção */
+  .section-title {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    margin-bottom: 8px !important;
+    font-weight: bold !important;
+    color: #374151 !important;
+  }
+
+  /* Cores forçadas para impressão */
+  .force-print-colors {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Estilos específicos apenas para HTML2Canvas/PDF */
+@media screen {
+  .pdf-generation {
+    width: 794px !important; /* A4 width in pixels at 96 DPI */
+    background: white !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .pdf-generation * {
+    box-sizing: border-box !important;
+  }
+
+  /* Força as cores em todas as situações */
+  .pdf-generation .force-print-colors,
+  .pdf-generation .bg-gradient-to-r {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

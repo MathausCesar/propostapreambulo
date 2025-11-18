@@ -171,22 +171,66 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
 
   // Colors and layout helpers (brand: dark blue to black header)
   return (
-    <div id={captureId} className="w-[210mm] mx-auto bg-white text-slate-900">
+    <div id={captureId} className="proposal-container pdf-generation force-print-colors">
+      {/* CSS específico para impressão */}
+      <style jsx>{`
+        @media print {
+          * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          .page-break {
+            page-break-before: always !important;
+            break-before: page !important;
+          }
+          
+          .no-page-break {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          
+          .print-margin {
+            margin: 15mm 20mm !important;
+            padding: 0 !important;
+          }
+          
+          body {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          
+          .header-section {
+            position: relative;
+            margin-bottom: 20px !important;
+          }
+          
+          .content-section {
+            min-height: auto !important;
+          }
+          
+          .investment-section {
+            page-break-before: auto;
+            page-break-inside: avoid !important;
+          }
+        }
+      `}</style>
       {/* Header */}
-      <div className="relative">
-        <div className="bg-gradient-to-r from-[#0A1B3F] via-[#0A0F1F] to-black text-white px-10 py-8 flex items-center justify-between">
+      <div className="relative header-section no-page-break">
+        <div className="bg-gradient-to-r from-[#0A1B3F] via-[#0A0F1F] to-black text-white px-8 py-6 flex items-center justify-between print:px-6 print:py-4">
           <div className="flex items-center gap-4">
-            <img src={preambutoImg} alt="Preâmbulo" className="h-12 w-auto object-contain" />
+            <img src={preambutoImg} alt="Preâmbulo" className="h-10 w-auto object-contain print:h-8" />
           </div>
           <div className="text-center">
             <div className="text-xs tracking-widest uppercase opacity-80">Documento</div>
-            <div className="text-2xl font-extrabold">Proposta Comercial</div>
+            <div className="text-xl font-extrabold print:text-lg">Proposta Comercial</div>
           </div>
           <div className="flex items-center gap-4">
-            <img src={prod.logo} alt={prod.name} className="h-12 w-auto object-contain" />
+            <img src={prod.logo} alt={prod.name} className="h-10 w-auto object-contain print:h-8" />
           </div>
         </div>
-        <div className="px-10 py-4 bg-[#0f172a] text-blue-100 flex items-center justify-between">
+        <div className="px-8 py-3 bg-[#0f172a] text-blue-100 flex items-center justify-between print:px-6 print:py-2">
           <div className="text-sm min-w-0 flex-1">
             <div className="opacity-80 text-xs mb-1">Produto</div>
             <div className="font-semibold text-white">{prod.name}</div>
@@ -208,12 +252,12 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
         </div>
       </div>
 
-      <div className="px-12 py-8 space-y-8">
+      <div className="px-8 py-6 space-y-6 content-section print:px-6 print:py-4 print:space-y-4 print-margin">
         {/* 1. Dados do Cliente e Consultor */}
-        <section>
-          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4">📋 1. Informações Gerais</h2>
-          <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-xl p-6">
-            <div className="grid grid-cols-2 gap-8">
+        <section className="section-together">
+          <h2 className="section-title text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 print:mb-2">📋 1. Informações Gerais</h2>
+          <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-lg p-4 print:p-3 print-clean force-print-colors">
+            <div className="grid grid-cols-2 gap-6 print:gap-4">
               {/* Cliente */}
               <div>
                 <h3 className="text-sm font-bold text-slate-800 mb-3">📄 Cliente</h3>
@@ -468,8 +512,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </section>
         )}
 
-        {/* 4. Investimento Mensal */}
-        <section>
+        {/* 4. Investimento Mensal - com quebra de página */}
+        <section className="page-break investment-section">
           <div className="flex items-end justify-between mb-3">
             <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
               💰 4. Investimento Mensal
@@ -483,12 +527,12 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           {monthlyItems.length === 0 ? (
             <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-slate-200">
-              <table className="w-full text-sm">
-                <thead className="bg-slate-100">
+            <div className="overflow-hidden rounded-lg border border-slate-200 section-together print-clean">
+              <table className="investment-table w-full text-sm">
+                <thead className="bg-slate-100 force-print-colors">
                   <tr>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-700">Item</th>
-                    <th className="text-center px-4 py-3 font-semibold text-slate-700">Qtd</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-700 w-2/5">Item</th>
+                    <th className="text-center px-4 py-3 font-semibold text-slate-700 w-1/6">Qtd</th>
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Unitário/Pacote</th>
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Mensal</th>
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Anual</th>
@@ -617,8 +661,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
         </section>
 
         {/* Footer */}
-        <footer className="text-center pt-6">
-          <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-xl p-4 mb-4">
+        <footer className="footer-section text-center">
+          <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg p-4 mb-4 force-print-colors print-clean">
             <div className="text-sm font-bold mb-1">⚡ Oferta por tempo limitado!</div>
             <div className="text-xs">Confirme sua proposta em até 30 dias e ganhe 1 mês de cortesia</div>
           </div>
