@@ -336,30 +336,49 @@ const App: React.FC = () => {
       const el = document.getElementById("history-pdf");
       if (!el || !pdfTarget) return;
       
-      // Adiciona classe específica para impressão
-      el.classList.add('printing-mode');
-      
       // Adiciona estilos inline específicos para impressão
       const styleElement = document.createElement('style');
       styleElement.innerHTML = `
         @media print {
-          body * { 
-            visibility: hidden !important;
+          * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
-          #history-pdf, #history-pdf * { 
-            visibility: visible !important;
+          body {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          body > *:not(#history-pdf) { 
+            display: none !important;
           }
           #history-pdf {
-            position: absolute !important;
-            left: 0 !important;
-            top: 0 !important;
+            display: block !important;
+            position: static !important;
             width: 100% !important;
+            height: auto !important;
             margin: 0 !important;
-            page-break-inside: avoid !important;
+            padding: 0 !important;
+            background: white !important;
+            color: black !important;
+            font-size: 12pt !important;
+            line-height: 1.4 !important;
+          }
+          #history-pdf * {
+            visibility: visible !important;
+            color: inherit !important;
+            background: transparent !important;
           }
           @page {
             margin: 0.5in !important;
-            size: A4 !important;
+            size: A4 portrait !important;
+          }
+          .page-break-avoid {
+            page-break-inside: avoid !important;
+          }
+          .force-print-colors {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
           }
         }
       `;
@@ -372,11 +391,10 @@ const App: React.FC = () => {
         
         // Remove estilos temporários após impressão
         setTimeout(() => {
-          el.classList.remove('printing-mode');
           document.head.removeChild(styleElement);
           setPdfTarget(null);
-        }, 100);
-      }, 100);
+        }, 1000);
+      }, 200);
     };
     if (pdfTarget) {
       // wait next tick for hidden renderer to mount
@@ -1029,30 +1047,49 @@ const handleChange =
                     const el = document.getElementById("proposal-pdf");
                     if (!el) return;
                     
-                    // Adiciona classe específica para impressão
-                    el.classList.add('printing-mode');
-                    
                     // Adiciona estilos inline específicos para impressão
                     const styleElement = document.createElement('style');
                     styleElement.innerHTML = `
                       @media print {
-                        body * { 
-                          visibility: hidden !important;
+                        * {
+                          -webkit-print-color-adjust: exact !important;
+                          color-adjust: exact !important;
+                          print-color-adjust: exact !important;
                         }
-                        #proposal-pdf, #proposal-pdf * { 
-                          visibility: visible !important;
+                        body {
+                          margin: 0 !important;
+                          padding: 0 !important;
+                        }
+                        body > *:not(#proposal-pdf) { 
+                          display: none !important;
                         }
                         #proposal-pdf {
-                          position: absolute !important;
-                          left: 0 !important;
-                          top: 0 !important;
+                          display: block !important;
+                          position: static !important;
                           width: 100% !important;
+                          height: auto !important;
                           margin: 0 !important;
-                          page-break-inside: avoid !important;
+                          padding: 0 !important;
+                          background: white !important;
+                          color: black !important;
+                          font-size: 12pt !important;
+                          line-height: 1.4 !important;
+                        }
+                        #proposal-pdf * {
+                          visibility: visible !important;
+                          color: inherit !important;
+                          background: transparent !important;
                         }
                         @page {
                           margin: 0.5in !important;
-                          size: A4 !important;
+                          size: A4 portrait !important;
+                        }
+                        .page-break-avoid {
+                          page-break-inside: avoid !important;
+                        }
+                        .force-print-colors {
+                          -webkit-print-color-adjust: exact !important;
+                          color-adjust: exact !important;
                         }
                       }
                     `;
@@ -1065,10 +1102,9 @@ const handleChange =
                       
                       // Remove estilos temporários após impressão
                       setTimeout(() => {
-                        el.classList.remove('printing-mode');
                         document.head.removeChild(styleElement);
-                      }, 100);
-                    }, 100);
+                      }, 1000);
+                    }, 200);
                 }} className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
