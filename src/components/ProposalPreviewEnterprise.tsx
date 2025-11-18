@@ -512,21 +512,22 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </section>
         )}
 
-        {/* 4. Investimento Mensal - com quebra de página */}
-        <section className="page-break investment-section">
-          <div className="flex items-end justify-between mb-3">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-              💰 4. Investimento Mensal
-            </h2>
-            <div className="text-right">
-              <div className="text-xs text-slate-500">Total Mensal</div>
-              <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
-              <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+        {/* 4. Investimento Mensal - container protegido */}
+        <section className="section-together">
+          <div className="no-page-break">
+            <div className="flex items-end justify-between mb-3">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
+                💰 4. Investimento Mensal
+              </h2>
+              <div className="text-right">
+                <div className="text-xs text-slate-500">Total Mensal</div>
+                <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
+                <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+              </div>
             </div>
-          </div>
-          {monthlyItems.length === 0 ? (
-            <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
-          ) : (
+            {monthlyItems.length === 0 ? (
+              <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
+            ) : (
             <div className="overflow-hidden rounded-lg border border-slate-200 section-together print-clean">
               <table className="investment-table w-full text-sm">
                 <thead className="bg-slate-100 force-print-colors">
@@ -552,6 +553,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               </table>
             </div>
           )}
+          </div>
         </section>
 
         {/* 5. Investimento Inicial */}

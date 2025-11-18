@@ -2,23 +2,25 @@
 @media print, screen {
   * {
     -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Container principal */
+  /* Container principal com altura protegida */
   .proposal-container {
     width: 210mm !important;
     margin: 0 auto !important;
     background: white !important;
     font-size: 12px !important;
     line-height: 1.4 !important;
+    min-height: 280mm !important;
+    position: relative !important;
   }
 
-  /* Margens adequadas para A4 */
+  /* Margens adequadas para A4 com proteção extra */
   .print-margin {
-    margin: 15mm 20mm !important;
-    padding: 0 !important;
+    margin: 10mm 15mm !important;
+    padding: 0 10px !important;
+    min-height: 250mm !important;
   }
 
   /* Quebras de página controladas */
@@ -50,19 +52,31 @@
     break-inside: avoid !important;
   }
 
-  /* Seções que devem ficar juntas */
+  /* Seções que devem ficar juntas - proteção extra */
   .section-together {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     margin-bottom: 15px !important;
+    padding: 5px !important;
+    position: relative !important;
+  }
+  
+  /* Proteção para título + conteúdo */
+  .section-together h2 + div,
+  .section-together h2 + .bg-gradient-to-r {
+    page-break-before: avoid !important;
+    break-before: avoid !important;
   }
 
-  /* Tabelas */
+  /* Tabelas com proteção extra */
   .investment-table {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    page-break-before: avoid !important;
+    break-before: avoid !important;
     width: 100% !important;
     border-collapse: collapse !important;
+    margin-bottom: 15px !important;
   }
 
   .investment-table th,
@@ -77,21 +91,24 @@
     font-weight: bold !important;
   }
 
-  /* Seção de investimento sempre em nova página */
+  /* Seção de investimento - evitar quebra inadequada */
   .investment-section {
-    page-break-before: always !important;
-    break-before: page !important;
-    margin-top: 0 !important;
-    padding-top: 20px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-top: 15px !important;
+    padding-top: 0 !important;
   }
 
-  /* Footer sempre no final */
+  /* Footer sempre protegido */
   .footer-section {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin-top: 30px !important;
+    page-break-before: avoid !important;
+    break-before: avoid !important;
+    margin-top: 20px !important;
     border-top: 1px solid #e2e8f0 !important;
     padding-top: 15px !important;
+    min-height: 120px !important;
   }
 
   /* Ajustes específicos para impressão */
@@ -146,7 +163,6 @@
   .pdf-generation .force-print-colors,
   .pdf-generation .bg-gradient-to-r {
     -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 }
