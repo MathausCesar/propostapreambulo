@@ -166,3 +166,125 @@
     print-color-adjust: exact !important;
   }
 }
+
+/* ========== REGRAS ADAPTATIVAS POR RESOLUÇÃO ========== */
+
+/* Classes adaptativas por resolução */
+.adaptive-resolution {
+  --base-font-size: 12px;
+  --base-padding: 8px;
+  --base-margin: 10px;
+  font-size: var(--base-font-size);
+}
+
+.high-dpi {
+  --scale-factor: 1.5;
+  --base-font-size: 11px;
+  --base-padding: 6px;
+  --base-margin: 8px;
+}
+
+.high-dpi .investment-table th,
+.high-dpi .investment-table td {
+  padding: calc(var(--base-padding) * 0.8) calc(var(--base-padding) * 1.2) !important;
+  font-size: calc(var(--base-font-size) * 0.9) !important;
+}
+
+.screen-mobile {
+  --base-font-size: 10px;
+  --base-padding: 4px;
+}
+
+.screen-tablet {
+  --base-font-size: 11px;
+  --base-padding: 6px;
+}
+
+.screen-desktop {
+  --base-font-size: 12px;
+  --base-padding: 8px;
+}
+
+.screen-large-desktop {
+  --base-font-size: 13px;
+  --base-padding: 10px;
+}
+
+/* Proteção extra para DPR específicos */
+.dpr-2 .section-together {
+  padding: calc(var(--base-padding) * 1.1) !important;
+  margin-bottom: calc(var(--base-margin) * 1.1) !important;
+}
+
+.dpr-3 .section-together,
+.dpr-4 .section-together {
+  padding: calc(var(--base-padding) * 1.5) !important;
+  margin-bottom: calc(var(--base-margin) * 1.2) !important;
+}
+
+/* Ajustes para resoluções específicas */
+@media screen and (min-resolution: 192dpi) {
+  .adaptive-resolution {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+  
+  .investment-table th,
+  .investment-table td {
+    padding: 6px 8px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media screen and (min-resolution: 288dpi) {
+  .adaptive-resolution {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .investment-table th,
+  .investment-table td {
+    padding: 4px 6px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* Ajustes específicos para diferentes tamanhos de tela */
+@media screen and (max-width: 768px) {
+  .adaptive-resolution {
+    --base-font-size: 10px;
+    --base-padding: 4px;
+    --base-margin: 6px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .adaptive-resolution:not(.high-dpi) {
+    --base-font-size: 13px;
+    --base-padding: 10px;
+    --base-margin: 12px;
+  }
+}
+
+/* Proteção contra quebras em dispositivos com alto DPI */
+.high-dpi .section-together {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  margin-bottom: calc(var(--base-margin) * 1.5) !important;
+}
+
+/* Ajustes para escalamento em PDF */
+@media print {
+  .adaptive-resolution {
+    transform-origin: top left !important;
+  }
+  
+  .high-dpi {
+    transform: scale(0.8) !important;
+  }
+  
+  .dpr-3,
+  .dpr-4 {
+    transform: scale(0.75) !important;
+  }
+}

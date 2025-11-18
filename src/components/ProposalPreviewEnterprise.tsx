@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { ProposalFormState } from "../types";
 import * as pricingRules from "../utils/pricingRules";
+import { getDeviceInfo, getPDFConfig, prepareElementForCapture } from "../utils/pdfResolution";
 
 // Usar caminhos diretos para Electron
 const officeImg = '/office.png';
@@ -50,6 +51,24 @@ interface Props {
 }
 
 export default function ProposalPreviewEnterprise({ formState, consultantProfile, captureId }: Props) {
+  // Detecta informações do dispositivo para ajustes adaptativos
+  const [deviceInfo] = React.useState(() => getDeviceInfo());
+  const [pdfConfig] = React.useState(() => getPDFConfig(deviceInfo));
+  
+  // Classes CSS baseadas na resolução
+  const resolutionClasses = React.useMemo(() => {
+    const classes = ['adaptive-resolution'];
+    
+    if (deviceInfo.isHighDPI) {
+      classes.push('high-dpi');
+    }
+    
+    classes.push(`screen-${deviceInfo.screenType}`);
+    classes.push(`dpr-${Math.floor(deviceInfo.dpr)}`);
+    
+    return classes.join(' ');
+  }, [deviceInfo]);
+  
   const isOffice = formState.erp === "OFFICE_ADV";
   const isCpj = formState.erp === "CPJ_3C_PLUS";
   const prod = productInfo(formState.erp);
@@ -171,51 +190,18 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
 
   // Colors and layout helpers (brand: dark blue to black header)
   return (
-    <div id={captureId} className="proposal-container pdf-generation force-print-colors">
-      {/* CSS específico para impressão */}
-      <style jsx>{`
-        @media print {
-          * {
-            -webkit-print-color-adjust: exact !important;
-            color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          
-          .page-break {
-            page-break-before: always !important;
-            break-before: page !important;
-          }
-          
-          .no-page-break {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-          }
-          
-          .print-margin {
-            margin: 15mm 20mm !important;
-            padding: 0 !important;
-          }
-          
-          body {
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-          
-          .header-section {
-            position: relative;
-            margin-bottom: 20px !important;
-          }
-          
-          .content-section {
-            min-height: auto !important;
-          }
-          
-          .investment-section {
-            page-break-before: auto;
-            page-break-inside: avoid !important;
-          }
-        }
-      `}</style>
+    <div 
+      id={captureId} 
+      className={`proposal-container pdf-generation force-print-colors ${resolutionClasses}`} 
+      data-device-info={JSON.stringify(deviceInfo)}
+      style={{
+        '--base-font-size': deviceInfo.isHighDPI ? '11px' : '12px',
+        '--base-padding': deviceInfo.isHighDPI ? '6px' : '8px',
+        '--base-margin': deviceInfo.isHighDPI ? '8px' : '10px',
+        fontSize: deviceInfo.isHighDPI ? '11px' : '12px'
+      } as React.CSSProperties}
+    >
+      {/* CSS adaptativo será aplicado via classes CSS externas */}
       {/* Header */}
       <div className="relative header-section no-page-break">
         <div className="bg-gradient-to-r from-[#0A1B3F] via-[#0A0F1F] to-black text-white px-8 py-6 flex items-center justify-between print:px-6 print:py-4">
