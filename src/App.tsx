@@ -332,48 +332,55 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    const generate = async () => {
+    const printProposal = async () => {
       const el = document.getElementById("history-pdf");
       if (!el || !pdfTarget) return;
-      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-        import("html2canvas"),
-        import("jspdf") as any,
-      ]);
-      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pageWidth = 210;
-      const pageHeight = 297;
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      if (imgHeight <= pageHeight) {
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "FAST");
-      } else {
-        let position = 0;
-        const scale = imgWidth / canvas.width;
-        const pagePixelHeight = Math.floor(pageHeight / scale);
-        while (position < canvas.height) {
-          const pageCanvas = document.createElement("canvas");
-          const pageCtx = pageCanvas.getContext("2d");
-          const sliceHeight = Math.min(pagePixelHeight, canvas.height - position);
-          pageCanvas.width = canvas.width;
-          pageCanvas.height = sliceHeight;
-          if (pageCtx) {
-            pageCtx.drawImage(canvas, 0, -position);
-            const pageData = pageCanvas.toDataURL("image/png");
-            const pageH = (sliceHeight * imgWidth) / canvas.width;
-            if (position > 0) pdf.addPage();
-            pdf.addImage(pageData, "PNG", 0, 0, imgWidth, pageH, undefined, "FAST");
+      
+      // Adiciona classe específica para impressão
+      el.classList.add('printing-mode');
+      
+      // Adiciona estilos inline específicos para impressão
+      const styleElement = document.createElement('style');
+      styleElement.innerHTML = `
+        @media print {
+          body * { 
+            visibility: hidden !important;
           }
-          position += sliceHeight;
+          #history-pdf, #history-pdf * { 
+            visibility: visible !important;
+          }
+          #history-pdf {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            page-break-inside: avoid !important;
+          }
+          @page {
+            margin: 0.5in !important;
+            size: A4 !important;
+          }
         }
-      }
-      pdf.save(`Proposta_${pdfTarget.clientName || "cliente"}.pdf`);
-      setPdfTarget(null);
+      `;
+      document.head.appendChild(styleElement);
+      
+      // Pequeno delay para aplicar os estilos
+      setTimeout(() => {
+        // Abre a janela de impressão
+        window.print();
+        
+        // Remove estilos temporários após impressão
+        setTimeout(() => {
+          el.classList.remove('printing-mode');
+          document.head.removeChild(styleElement);
+          setPdfTarget(null);
+        }, 100);
+      }, 100);
     };
     if (pdfTarget) {
       // wait next tick for hidden renderer to mount
-      setTimeout(generate, 50);
+      setTimeout(printProposal, 50);
     }
   }, [pdfTarget]);
 
