@@ -336,69 +336,64 @@ const App: React.FC = () => {
       const el = document.getElementById("history-pdf");
       if (!el || !pdfTarget) return;
       
-      // Cria uma nova janela para impressão
-      const printWindow = window.open('', '_blank', 'width=800,height=600');
-      if (!printWindow) {
-        setPdfTarget(null);
-        return;
-      }
+      // Pega todos os estilos da página atual
+      const stylesheets = Array.from(document.styleSheets);
+      let allCSS = '';
+      
+      // Coleta CSS de todas as stylesheets
+      stylesheets.forEach(sheet => {
+        try {
+          if (sheet.cssRules) {
+            Array.from(sheet.cssRules).forEach(rule => {
+              allCSS += rule.cssText + '\n';
+            });
+          }
+        } catch (e) {
+          // Ignora erros de CORS
+        }
+      });
+      
+      // Pega também os estilos inline
+      const styleElements = Array.from(document.querySelectorAll('style'));
+      styleElements.forEach(style => {
+        allCSS += style.textContent + '\n';
+      });
       
       const proposalHTML = el.outerHTML;
       
-      // CSS específico para impressão
-      const printCSS = `
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
+      // CSS adicional específico para impressão
+      const additionalCSS = `
+        @media print {
           body { 
-            font-family: Arial, sans-serif; 
-            font-size: 12pt; 
-            line-height: 1.4; 
-            color: #000;
-            background: white;
-          }
-          .proposal-container {
-            max-width: none !important;
-            width: 100% !important;
-            padding: 20px !important;
-            background: white !important;
-            color: black !important;
-          }
-          .force-print-colors {
+            margin: 0 !important; 
+            padding: 0 !important;
             -webkit-print-color-adjust: exact !important;
             color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
-          .gradient-background {
-            background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%) !important;
-            color: white !important;
+          * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
-          .bg-gradient-to-r {
-            background: linear-gradient(to right, var(--tw-gradient-stops)) !important;
+          .proposal-container {
+            max-width: none !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
           }
-          .text-white { color: white !important; }
-          .text-blue-600 { color: #2563eb !important; }
-          .text-emerald-600 { color: #059669 !important; }
-          .bg-blue-50 { background-color: #eff6ff !important; }
-          .border { border: 1px solid #e5e7eb !important; }
-          .rounded, .rounded-lg { border-radius: 0.5rem !important; }
-          .p-4 { padding: 1rem !important; }
-          .p-6 { padding: 1.5rem !important; }
-          .mb-4 { margin-bottom: 1rem !important; }
-          .mb-6 { margin-bottom: 1.5rem !important; }
-          .text-center { text-align: center !important; }
-          .font-bold { font-weight: bold !important; }
-          .text-lg { font-size: 1.125rem !important; }
-          .text-xl { font-size: 1.25rem !important; }
-          .text-2xl { font-size: 1.5rem !important; }
           @page { 
             margin: 0.5in; 
             size: A4 portrait; 
           }
-          @media print {
-            body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-          }
-        </style>
+        }
       `;
+      
+      // Cria uma nova janela para impressão
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        setPdfTarget(null);
+        return;
+      }
       
       // Monta o HTML da janela de impressão
       printWindow.document.write(`
@@ -407,7 +402,10 @@ const App: React.FC = () => {
           <head>
             <meta charset="utf-8">
             <title>Proposta - ${pdfTarget.clientName || 'Cliente'}</title>
-            ${printCSS}
+            <style>
+              ${allCSS}
+              ${additionalCSS}
+            </style>
           </head>
           <body>
             ${proposalHTML}
@@ -420,9 +418,11 @@ const App: React.FC = () => {
       // Aguarda carregar e imprime
       setTimeout(() => {
         printWindow.print();
-        printWindow.close();
-        setPdfTarget(null);
-      }, 500);
+        setTimeout(() => {
+          printWindow.close();
+          setPdfTarget(null);
+        }, 500);
+      }, 1000);
     };
     if (pdfTarget) {
       // wait next tick for hidden renderer to mount
@@ -1071,70 +1071,65 @@ const handleChange =
               </div>
               <div className="bg-white/5 backdrop-blur-xl border-t border-white/10 p-4">
                 <button onClick={async () => {
-                    // Cria uma nova janela para impressão
-                    const printWindow = window.open('', '_blank', 'width=800,height=600');
-                    if (!printWindow) return;
-                    
                     // Pega o conteúdo da proposta
                     const proposalElement = document.getElementById("proposal-pdf");
                     if (!proposalElement) return;
                     
+                    // Pega todos os estilos da página atual
+                    const stylesheets = Array.from(document.styleSheets);
+                    let allCSS = '';
+                    
+                    // Coleta CSS de todas as stylesheets
+                    stylesheets.forEach(sheet => {
+                      try {
+                        if (sheet.cssRules) {
+                          Array.from(sheet.cssRules).forEach(rule => {
+                            allCSS += rule.cssText + '\n';
+                          });
+                        }
+                      } catch (e) {
+                        // Ignora erros de CORS
+                      }
+                    });
+                    
+                    // Pega também os estilos inline
+                    const styleElements = Array.from(document.querySelectorAll('style'));
+                    styleElements.forEach(style => {
+                      allCSS += style.textContent + '\n';
+                    });
+                    
                     const proposalHTML = proposalElement.outerHTML;
                     
-                    // CSS específico para impressão
-                    const printCSS = `
-                      <style>
-                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                    // CSS adicional específico para impressão
+                    const additionalCSS = `
+                      @media print {
                         body { 
-                          font-family: Arial, sans-serif; 
-                          font-size: 12pt; 
-                          line-height: 1.4; 
-                          color: #000;
-                          background: white;
-                        }
-                        .proposal-container {
-                          max-width: none !important;
-                          width: 100% !important;
-                          padding: 20px !important;
-                          background: white !important;
-                          color: black !important;
-                        }
-                        .force-print-colors {
+                          margin: 0 !important; 
+                          padding: 0 !important;
                           -webkit-print-color-adjust: exact !important;
                           color-adjust: exact !important;
                           print-color-adjust: exact !important;
                         }
-                        .gradient-background {
-                          background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%) !important;
-                          color: white !important;
+                        * {
+                          -webkit-print-color-adjust: exact !important;
+                          color-adjust: exact !important;
+                          print-color-adjust: exact !important;
                         }
-                        .bg-gradient-to-r {
-                          background: linear-gradient(to right, var(--tw-gradient-stops)) !important;
+                        .proposal-container {
+                          max-width: none !important;
+                          margin: 0 auto !important;
+                          padding: 20px !important;
                         }
-                        .text-white { color: white !important; }
-                        .text-blue-600 { color: #2563eb !important; }
-                        .text-emerald-600 { color: #059669 !important; }
-                        .bg-blue-50 { background-color: #eff6ff !important; }
-                        .border { border: 1px solid #e5e7eb !important; }
-                        .rounded, .rounded-lg { border-radius: 0.5rem !important; }
-                        .p-4 { padding: 1rem !important; }
-                        .p-6 { padding: 1.5rem !important; }
-                        .mb-4 { margin-bottom: 1rem !important; }
-                        .mb-6 { margin-bottom: 1.5rem !important; }
-                        .text-center { text-align: center !important; }
-                        .font-bold { font-weight: bold !important; }
-                        .text-lg { font-size: 1.125rem !important; }
-                        .text-xl { font-size: 1.25rem !important; }
-                        .text-2xl { font-size: 1.5rem !important; }
                         @page { 
                           margin: 0.5in; 
                           size: A4 portrait; 
                         }
-                        @media print {
-                          body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-                        }
-                      </style>
+                      }
                     `;
+                    
+                    // Cria uma nova janela para impressão
+                    const printWindow = window.open('', '_blank');
+                    if (!printWindow) return;
                     
                     // Monta o HTML da janela de impressão
                     printWindow.document.write(`
@@ -1143,7 +1138,10 @@ const handleChange =
                         <head>
                           <meta charset="utf-8">
                           <title>Proposta - ${formState.clientName || 'Cliente'}</title>
-                          ${printCSS}
+                          <style>
+                            ${allCSS}
+                            ${additionalCSS}
+                          </style>
                         </head>
                         <body>
                           ${proposalHTML}
@@ -1156,8 +1154,10 @@ const handleChange =
                     // Aguarda carregar e imprime
                     setTimeout(() => {
                       printWindow.print();
-                      printWindow.close();
-                    }, 500);
+                      setTimeout(() => {
+                        printWindow.close();
+                      }, 500);
+                    }, 1000);
                 }} className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
