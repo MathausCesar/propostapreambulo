@@ -193,34 +193,42 @@ export function calculateClosedPackagePrice(
   tier: number;
   packageLimit: number;
   annualLimit: number;
+  custom?: boolean;
 } {
-  // Calcula quantidade anual necessária
   const annualQuantity = monthlyQuantity * 12;
-  
-  // Encontra o pacote adequado baseado no limite ANUAL
+
   for (let i = 0; i < tiers.length; i++) {
-    if (annualQuantity <= tiers[i].annualLimit) {
-      // Contrata o pacote COMPLETO, não fracionado
-      const packageMonthlyLimit = tiers[i].limit;
-      const packageAnnualLimit = tiers[i].annualLimit;
-      const monthlyPrice = packageMonthlyLimit * tiers[i].price;
-      
+    const tierDef = tiers[i];
+    if (annualQuantity <= tierDef.annualLimit) {
+      // Se for o tier infinito, tratar como personalizado (usa quantidade real * preço unitário)
+      if (!isFinite(tierDef.limit) || !isFinite(tierDef.annualLimit)) {
+        return {
+          monthlyPrice: monthlyQuantity * tierDef.price,
+          tier: i,
+          packageLimit: monthlyQuantity,
+          annualLimit: annualQuantity,
+          custom: true,
+        };
+      }
+      const packageMonthlyLimit = tierDef.limit;
+      const packageAnnualLimit = tierDef.annualLimit;
       return {
-        monthlyPrice,
+        monthlyPrice: packageMonthlyLimit * tierDef.price,
         tier: i,
         packageLimit: packageMonthlyLimit,
         annualLimit: packageAnnualLimit,
       };
     }
   }
-  
-  // Se ultrapassar todos os pacotes, permite contratação personalizada no preço do último tier
+
+  // Ultrapassou todos os tiers finitos (cai no personalizado do último tier)
   const lastTier = tiers[tiers.length - 1];
   return {
     monthlyPrice: monthlyQuantity * lastTier.price,
     tier: tiers.length - 1,
     packageLimit: monthlyQuantity,
     annualLimit: annualQuantity,
+    custom: true,
   };
 }
 
