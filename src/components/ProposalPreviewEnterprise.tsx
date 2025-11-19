@@ -685,9 +685,15 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
 
         {/* Footer - Manter junto com assinaturas */}
         <footer className="footer-section text-center no-page-break">
-          <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg p-4 mb-4 force-print-colors print-clean">
-            <div className="text-sm font-bold mb-1">⚡ Oferta por tempo limitado!</div>
-            <div className="text-xs">Confirme sua proposta em até 30 dias e ganhe 1 mês de cortesia</div>
+          <div className="bg-gradient-to-r from-black via-yellow-500 to-black text-white rounded-lg p-4 mb-4 force-print-colors print-clean">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-yellow-400 text-lg">🔥</span>
+              <span className="text-lg font-bold">BLACK NOVEMBER</span>
+              <span className="text-yellow-400 text-lg">🔥</span>
+            </div>
+            <div className="text-yellow-300 text-sm font-semibold">
+              Aproveite nossos planos com desconto de até 56%!
+            </div>
           </div>
           <p className="text-xs text-slate-500">Documento eletrônico • Preâmbulo Informática • {new Date().toLocaleDateString("pt-BR")}</p>
           <div className="text-xs text-blue-600 mt-2">
