@@ -275,43 +275,12 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               </div>
             </div>
           </section>
-
-          {/* 2. Benefícios e Diferenciais */}
-          <section className="section-together no-page-break mb-6">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
-              ⭐ 2. Por que escolher {prod.name}?
-            </h2>
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 force-print-colors">
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-sm font-bold text-green-800 mb-3 flex items-center gap-1">🚀 Benefícios Principais</h3>
-                  <ul className="text-xs space-y-2 text-slate-700">
-                    <li>✅ Redução de 60% no tempo de tarefas repetitivas</li>
-                    <li>✅ Integração completa com tribunais</li>
-                    <li>✅ Segurança de dados certificada</li>
-                    <li>✅ Suporte especializado incluso</li>
-                    <li>✅ Atualizações automáticas</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-1">🛡️ Garantias</h3>
-                  <ul className="text-xs space-y-2 text-slate-700">
-                    <li>🔒 Backup automático em nuvem</li>
-                    <li>📞 Suporte técnico prioritário</li>
-                    <li>🔄 Migração de dados assistida</li>
-                    <li>📚 Treinamento da equipe incluso</li>
-                    <li>⏰ SLA de 99,9% de disponibilidade</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
         </div>
 
-        {/* 3. Resumo do Pacote e Exceedências */}
+        {/* 2. Resumo do Pacote e Exceedências */}
         {selectedTier && (isOffice || isCpj) && (
           <section className="mb-8 no-page-break package-summary-section">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-2 no-page-break-after">📋 3. Resumo do Pacote</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-2 no-page-break-after">📋 2. Resumo do Pacote</h2>
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-4 no-page-break-before">
               <div className="grid grid-cols-2 gap-8">
                 <div>
@@ -529,12 +498,12 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
         {/* PÁGINA 2 CONTINUAÇÃO - INVESTIMENTO */}
         <div className="investment-section page-content-group">
           
-          {/* 4. Investimento Mensal */}
+          {/* 3. Investimento Mensal */}
           <section className="investment-table-container section-together">
             <div className="no-page-break">
               <div className="flex items-end justify-between mb-3">
                 <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-                  💰 4. Investimento Mensal
+                  💰 3. Investimento Mensal
                 </h2>
                 <div className="text-right">
                   <div className="text-xs text-slate-500">Total Mensal</div>
@@ -573,11 +542,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </div>
         </section>
 
-          {/* 5. Investimento Inicial */}
+          {/* 4. Investimento Inicial */}
           <section className="investment-table-container section-together">
             <div className="flex items-end justify-between mb-3">
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-                🚀 5. Investimento Inicial (Setup)
+                🚀 4. Investimento Inicial (Setup)
               </h2>
               <div className="text-right">
                 <div className="text-xs text-slate-500">Total Setup</div>
@@ -615,10 +584,10 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
         {/* PÁGINA 3 - CONDIÇÕES COMERCIAIS E ACEITE */}
         <div className="proposal-page-3 page-break page-content-group">
 
-          {/* 6. Condições de Pagamento */}
+          {/* 5. Condições de Pagamento */}
           <section className="commercial-conditions-section section-together">
             <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
-              💳 6. Condições de Pagamento
+              💳 5. Condições de Pagamento
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="rounded-xl border border-slate-200 p-5 bg-white">
@@ -651,11 +620,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
             </div>
           </section>
 
-          {/* 7. Observações */}
+          {/* 6. Observações */}
           {formState.observations && (
             <section className="section-together">
               <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
-                📝 7. Observações
+                📝 6. Observações
               </h2>
               <div className="rounded-xl border border-slate-200 p-5 bg-slate-50">
                 <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">{formState.observations}</p>
@@ -663,7 +632,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
             </section>
           )}
 
-          {/* 8. Assinaturas - Manter junto com footer */}
+          {/* 7. Assinaturas - Manter junto com footer */}
           <section className="pt-4 no-page-break signature-section">
             <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 flex items-center gap-2">
               ✍️ Aceite da Proposta
