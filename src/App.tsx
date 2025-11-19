@@ -405,6 +405,7 @@ const App: React.FC = () => {
           .package-summary-section h2 {
             page-break-after: avoid !important;
             break-after: avoid !important;
+            margin-bottom: 0.5rem !important;
           }
           .no-page-break-before {
             page-break-before: avoid !important;
@@ -1177,6 +1178,7 @@ const handleChange =
                         .package-summary-section h2 {
                           page-break-after: avoid !important;
                           break-after: avoid !important;
+                          margin-bottom: 0.5rem !important;
                         }
                         .no-page-break-before {
                           page-break-before: avoid !important;
