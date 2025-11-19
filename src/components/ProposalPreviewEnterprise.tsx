@@ -360,22 +360,16 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                               <strong className="text-blue-800">{(inclusions.agentTokens || 0).toLocaleString()}</strong>
                             </div>
                           )}
-                          {isCpj && 'financeAdvancedIncluded' in inclusions && (
+                          {isCpj && 'bankPlan' in inclusions && 'boletos' in inclusions && (
                             <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
-                              <span>• Financeiro Avançado:</span>
-                              <strong className="text-blue-800">{inclusions.financeAdvancedIncluded ? 'Incluído' : 'Padrão'}</strong>
+                              <span>• {inclusions.bankPlan}:</span>
+                              <strong className="text-blue-800">Conta Digital + {inclusions.boletos} Boletos</strong>
                             </div>
                           )}
-                          {isCpj && (
+                          {isCpj && 'financeType' in inclusions && (
                             <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
-                              <span>• Boletos/mês:</span>
-                              <strong className="text-blue-800">Ilimitados</strong>
-                            </div>
-                          )}
-                          {isCpj && (
-                            <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
-                              <span>• Conta Digital Preâmbulo Bank:</span>
-                              <strong className="text-blue-800">Incluída</strong>
+                              <span>• Financeiro:</span>
+                              <strong className="text-blue-800">{inclusions.financeType}</strong>
                             </div>
                           )}
                           {isCpj && 'unlimitedProcesses' in inclusions && (

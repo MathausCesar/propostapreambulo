@@ -63,7 +63,9 @@ export const CPJ3C_PLANS: Record<PackageTier, {
     nfe: number;
     storage: number;
     agentTokens: number;
-    financeAdvancedIncluded: boolean;
+    bankPlan: string;
+    boletos: number;
+    financeType: "Padrão" | "Avançado";
     unlimitedProcesses: boolean;
   };
 }> = {
@@ -78,7 +80,9 @@ export const CPJ3C_PLANS: Record<PackageTier, {
       nfe: 1,
       storage: 80,
       agentTokens: 10000,
-      financeAdvancedIncluded: false,
+      bankPlan: "Preâmbulo Bank Essencial",
+      boletos: 50,
+      financeType: "Padrão",
       unlimitedProcesses: true,
     },
   },
@@ -93,7 +97,9 @@ export const CPJ3C_PLANS: Record<PackageTier, {
       nfe: 2,
       storage: 200,
       agentTokens: 20000,
-      financeAdvancedIncluded: true,
+      bankPlan: "Preâmbulo Bank Growth",
+      boletos: 100,
+      financeType: "Avançado",
       unlimitedProcesses: true,
     },
   },
@@ -108,7 +114,9 @@ export const CPJ3C_PLANS: Record<PackageTier, {
       nfe: 3,
       storage: 500,
       agentTokens: 50000,
-      financeAdvancedIncluded: true,
+      bankPlan: "Preâmbulo Bank Growth",
+      boletos: 150,
+      financeType: "Avançado",
       unlimitedProcesses: true,
     },
   },
