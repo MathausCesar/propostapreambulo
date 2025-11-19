@@ -182,6 +182,50 @@ export const AI_DOCS_TIERS = [
 ];
 
 /**
+ * Calcula o preço de um item baseado em pacotes FECHADOS anuais
+ * O cliente sempre contrata o pacote completo, não valores fracionados
+ */
+export function calculateClosedPackagePrice(
+  monthlyQuantity: number,
+  tiers: Array<{ limit: number; annualLimit: number; price: number }>
+): {
+  monthlyPrice: number;
+  tier: number;
+  packageLimit: number;
+  annualLimit: number;
+} {
+  // Calcula quantidade anual necessária
+  const annualQuantity = monthlyQuantity * 12;
+  
+  // Encontra o pacote adequado baseado no limite ANUAL
+  for (let i = 0; i < tiers.length; i++) {
+    if (annualQuantity <= tiers[i].annualLimit) {
+      // Contrata o pacote COMPLETO, não fracionado
+      const packageMonthlyLimit = tiers[i].limit;
+      const packageAnnualLimit = tiers[i].annualLimit;
+      const monthlyPrice = packageMonthlyLimit * tiers[i].price;
+      
+      return {
+        monthlyPrice,
+        tier: i,
+        packageLimit: packageMonthlyLimit,
+        annualLimit: packageAnnualLimit,
+      };
+    }
+  }
+  
+  // Se ultrapassar todos os pacotes, permite contratação personalizada no preço do último tier
+  const lastTier = tiers[tiers.length - 1];
+  return {
+    monthlyPrice: monthlyQuantity * lastTier.price,
+    tier: tiers.length - 1,
+    packageLimit: monthlyQuantity,
+    annualLimit: annualQuantity,
+  };
+}
+
+/**
+ * DEPRECATED: Mantido para compatibilidade, mas use calculateClosedPackagePrice
  * Calcula o preço de um item baseado em pacotes de volume
  */
 export function calculateTieredPrice(
@@ -236,7 +280,8 @@ export function calculateOfficeExceedances(params: {
     0,
     params.publications - params.planInclusions.publications
   );
-  // Para serviços com pacotes escalonados, calcular apenas o excedente sobre a inclusão do plano
+  
+  // Para serviços com pacotes FECHADOS, calcular excedente e atribuir pacote completo
   const monExceed = Math.max(0, params.monitoring - params.planInclusions.monitoring);
   const distExceed = Math.max(0, params.distribution);
   const protExceed = Math.max(0, params.protocol);
@@ -246,11 +291,11 @@ export function calculateOfficeExceedances(params: {
   const usersPrice = usersExceed * OFFICE_UNIT_PRICES.user;
   const pubPrice = pubExceed * OFFICE_UNIT_PRICES.publication;
   
-  // Para pacotes escalonados, calcular apenas o que excede as inclusões
-  const monPrice = monExceed > 0 ? calculateTieredPrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const distPrice = distExceed > 0 ? calculateTieredPrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const protPrice = protExceed > 0 ? calculateTieredPrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const docPrice = docExceed > 0 ? calculateTieredPrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0 };
+  // PACOTES FECHADOS: Cliente contrata o pacote completo baseado na necessidade anual
+  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const docPrice = docExceed > 0 ? calculateClosedPackagePrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
   const intimPrice = intimExceed * OFFICE_UNIT_PRICES.intimation;
   const financePrice = params.includeFinance && !params.planInclusions.financeIncluded
     ? OFFICE_UNIT_PRICES.financeAdvanced
@@ -274,18 +319,30 @@ export function calculateOfficeExceedances(params: {
       exceed: monExceed,
       price: monPrice.monthlyPrice,
       tier: monPrice.tier,
+      packageLimit: monPrice.packageLimit,
+      annualLimit: monPrice.annualLimit,
     },
     distribution: {
       exceed: distExceed,
       price: distPrice.monthlyPrice,
       tier: distPrice.tier,
+      packageLimit: distPrice.packageLimit,
+      annualLimit: distPrice.annualLimit,
     },
     protocol: {
       exceed: protExceed,
       price: protPrice.monthlyPrice,
       tier: protPrice.tier,
+      packageLimit: protPrice.packageLimit,
+      annualLimit: protPrice.annualLimit,
     },
-    docs: { exceed: docExceed, price: docPrice.monthlyPrice, tier: docPrice.tier },
+    docs: { 
+      exceed: docExceed, 
+      price: docPrice.monthlyPrice, 
+      tier: docPrice.tier,
+      packageLimit: docPrice.packageLimit,
+      annualLimit: docPrice.annualLimit,
+    },
     finance: { price: financePrice },
     totalMonthly: total,
   };
@@ -316,7 +373,8 @@ export function calculateCpj3cExceedances(params: {
     0,
     params.publications - params.planInclusions.publications
   );
-  // Para serviços com pacotes escalonados, calcular apenas o excedente sobre a inclusão do plano
+  
+  // Para serviços com pacotes FECHADOS, calcular excedente e atribuir pacote completo
   const monExceed = Math.max(0, params.monitoring - params.planInclusions.monitoring);
   const distExceed = Math.max(0, params.distribution);
   const protExceed = Math.max(0, params.protocol);
@@ -325,11 +383,11 @@ export function calculateCpj3cExceedances(params: {
   const usersPrice = usersExceed * CPJ3C_UNIT_PRICES.user;
   const pubPrice = pubExceed * CPJ3C_UNIT_PRICES.publication;
   
-  // Para pacotes escalonados, calcular apenas o que excede as inclusões
-  const monPrice = monExceed > 0 ? calculateTieredPrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const distPrice = distExceed > 0 ? calculateTieredPrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const protPrice = protExceed > 0 ? calculateTieredPrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0 };
-  const docPrice = docExceed > 0 ? calculateTieredPrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0 };
+  // PACOTES FECHADOS: Cliente contrata o pacote completo baseado na necessidade anual
+  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const docPrice = docExceed > 0 ? calculateClosedPackagePrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
 
   const total =
     usersPrice +
@@ -346,18 +404,30 @@ export function calculateCpj3cExceedances(params: {
       exceed: monExceed,
       price: monPrice.monthlyPrice,
       tier: monPrice.tier,
+      packageLimit: monPrice.packageLimit,
+      annualLimit: monPrice.annualLimit,
     },
     distribution: {
       exceed: distExceed,
       price: distPrice.monthlyPrice,
       tier: distPrice.tier,
+      packageLimit: distPrice.packageLimit,
+      annualLimit: distPrice.annualLimit,
     },
     protocol: {
       exceed: protExceed,
       price: protPrice.monthlyPrice,
       tier: protPrice.tier,
+      packageLimit: protPrice.packageLimit,
+      annualLimit: protPrice.annualLimit,
     },
-    docs: { exceed: docExceed, price: docPrice.monthlyPrice, tier: docPrice.tier },
+    docs: { 
+      exceed: docExceed, 
+      price: docPrice.monthlyPrice, 
+      tier: docPrice.tier,
+      packageLimit: docPrice.packageLimit,
+      annualLimit: docPrice.annualLimit,
+    },
     totalMonthly: total,
   };
 }

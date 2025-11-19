@@ -107,11 +107,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
       if (ex.users.exceed > 0) monthlyItems.push({ item: "Usuários excedentes", qty: ex.users.exceed, unit: formatCurrency(80), monthly: ex.users.price, annual: ex.users.price * 12 });
       if (ex.publications.exceed > 0) monthlyItems.push({ item: "Publicações excedentes", qty: ex.publications.exceed, unit: formatCurrency(30), monthly: ex.publications.price, annual: ex.publications.price * 12 });
       if (ex.intimation.exceed > 0) monthlyItems.push({ item: "Intimações", qty: ex.intimation.exceed, unit: formatCurrency(pricingRules.UNIT_PRICES.officeIntimation), monthly: ex.intimation.price, annual: ex.intimation.price * 12 });
-      // Corrigido: usar campos Office (antes referenciava cpj3c*)
-      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento excedente", qty: formState.officeMonitoringCredits || 0, unit: "Pacote calculado", monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
-      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: formState.officeDistributionProcesses || 0, unit: "Pacote calculado", monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
-      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: formState.officeProtocols || 0, unit: "Pacote calculado", monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
-      if (ex.docs.exceed > 0) monthlyItems.push({ item: "Documentos IA excedentes", qty: ex.docs.exceed, unit: "Pacote calculado", monthly: ex.docs.price, annual: ex.docs.price * 12 });
+      // Pacotes fechados: mostra o pacote completo contratado
+      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento", qty: 1, unit: `Pacote ${(ex.monitoring as any).packageLimit}/mês (${(ex.monitoring as any).annualLimit}/ano)`, monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
+      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: 1, unit: `Pacote ${(ex.distribution as any).packageLimit}/mês (${(ex.distribution as any).annualLimit}/ano)`, monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
+      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: 1, unit: `Pacote ${(ex.protocol as any).packageLimit}/mês (${(ex.protocol as any).annualLimit}/ano)`, monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
+      if (ex.docs.exceed > 0) monthlyItems.push({ item: "Documentos IA", qty: 1, unit: `Pacote ${(ex.docs as any).packageLimit}/mês (${(ex.docs as any).annualLimit}/ano)`, monthly: ex.docs.price, annual: ex.docs.price * 12 });
       if (ex.finance.price > 0) monthlyItems.push({ item: "Financeiro Avançado", qty: 1, unit: formatCurrency(pricingRules.FIXED_PRICES.officeFinanceAdvanced), monthly: ex.finance.price, annual: ex.finance.price * 12 });
       monthlyTotal = base + ex.totalMonthly;
     }
@@ -140,10 +140,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
       monthlyItems.push({ item: `Pacote CPJ-3C+ ${tier}`, qty: 1, unit: "—", monthly: base, annual: base * 12 });
       if (ex.users.exceed > 0) monthlyItems.push({ item: "Usuários excedentes", qty: ex.users.exceed, unit: formatCurrency(106), monthly: ex.users.price, annual: ex.users.price * 12 });
       if (ex.publications.exceed > 0) monthlyItems.push({ item: "Publicações excedentes", qty: ex.publications.exceed, unit: formatCurrency(80), monthly: ex.publications.price, annual: ex.publications.price * 12 });
-      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento excedente", qty: formState.cpj3cMonitoringCredits || 0, unit: "Pacote calculado", monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
-      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: formState.cpj3cDistributionProcesses || 0, unit: "Pacote calculado", monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
-      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: formState.cpj3cProtocols || 0, unit: "Pacote calculado", monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
-      if (ex.docs.exceed > 0) monthlyItems.push({ item: "Documentos IA excedentes", qty: ex.docs.exceed, unit: "Pacote calculado", monthly: ex.docs.price, annual: ex.docs.price * 12 });
+      // Pacotes fechados: mostra o pacote completo contratado
+      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento", qty: 1, unit: `Pacote ${(ex.monitoring as any).packageLimit}/mês (${(ex.monitoring as any).annualLimit}/ano)`, monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
+      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: 1, unit: `Pacote ${(ex.distribution as any).packageLimit}/mês (${(ex.distribution as any).annualLimit}/ano)`, monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
+      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: 1, unit: `Pacote ${(ex.protocol as any).packageLimit}/mês (${(ex.protocol as any).annualLimit}/ano)`, monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
+      if (ex.docs.exceed > 0) monthlyItems.push({ item: "Documentos IA", qty: 1, unit: `Pacote ${(ex.docs as any).packageLimit}/mês (${(ex.docs as any).annualLimit}/ano)`, monthly: ex.docs.price, annual: ex.docs.price * 12 });
       if (formState.cpj3cConsultingHours) monthlyItems.push({ item: "Consultoria Mensal", qty: formState.cpj3cConsultingHours, unit: `${formatCurrency(pricingRules.FIXED_PRICES.consultingHourly)}/h`, monthly: consulting, annual: consulting * 12 });
       monthlyTotal = base + ex.totalMonthly + consulting;
     }
