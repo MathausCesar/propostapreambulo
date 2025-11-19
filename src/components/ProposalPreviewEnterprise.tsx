@@ -85,7 +85,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
     const users = formState.officeUsers || 0;
     const tier = suggestTierByUsersFor("OFFICE_ADV", users);
     const base = getPlanPrice("OFFICE_ADV", tier) || 0;
-    const inc = getPlanInclusions("OFFICE_ADV", tier) as (typeof OFFICE_ADV_PLANS)[typeof tier]["inclusions"] | null;
+    // Recupera inclusões do plano sem tentar indexação de tipo dinâmica (evita erro TS em build)
+    const inc = getPlanInclusions("OFFICE_ADV", tier) as any;
     
     if (!inc) {
       monthlyItems.push({ item: `Pacote Office ${tier}`, qty: 1, unit: "—", monthly: base, annual: base * 12 });
@@ -106,9 +107,10 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
       if (ex.users.exceed > 0) monthlyItems.push({ item: "Usuários excedentes", qty: ex.users.exceed, unit: formatCurrency(80), monthly: ex.users.price, annual: ex.users.price * 12 });
       if (ex.publications.exceed > 0) monthlyItems.push({ item: "Publicações excedentes", qty: ex.publications.exceed, unit: formatCurrency(30), monthly: ex.publications.price, annual: ex.publications.price * 12 });
       if (ex.intimation.exceed > 0) monthlyItems.push({ item: "Intimações", qty: ex.intimation.exceed, unit: formatCurrency(pricingRules.UNIT_PRICES.officeIntimation), monthly: ex.intimation.price, annual: ex.intimation.price * 12 });
-      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento excedente", qty: formState.cpj3cMonitoringCredits || 0, unit: "Pacote calculado", monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
-      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: formState.cpj3cDistributionProcesses || 0, unit: "Pacote calculado", monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
-      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: formState.cpj3cProtocols || 0, unit: "Pacote calculado", monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
+      // Corrigido: usar campos Office (antes referenciava cpj3c*)
+      if (ex.monitoring.exceed > 0) monthlyItems.push({ item: "Monitoramento excedente", qty: formState.officeMonitoringCredits || 0, unit: "Pacote calculado", monthly: ex.monitoring.price, annual: ex.monitoring.price * 12 });
+      if (ex.distribution.exceed > 0) monthlyItems.push({ item: "Distribuição", qty: formState.officeDistributionProcesses || 0, unit: "Pacote calculado", monthly: ex.distribution.price, annual: ex.distribution.price * 12 });
+      if (ex.protocol.exceed > 0) monthlyItems.push({ item: "Protocolos", qty: formState.officeProtocols || 0, unit: "Pacote calculado", monthly: ex.protocol.price, annual: ex.protocol.price * 12 });
       if (ex.docs.exceed > 0) monthlyItems.push({ item: "Documentos IA excedentes", qty: ex.docs.exceed, unit: "Pacote calculado", monthly: ex.docs.price, annual: ex.docs.price * 12 });
       if (ex.finance.price > 0) monthlyItems.push({ item: "Financeiro Avançado", qty: 1, unit: formatCurrency(pricingRules.FIXED_PRICES.officeFinanceAdvanced), monthly: ex.finance.price, annual: ex.finance.price * 12 });
       monthlyTotal = base + ex.totalMonthly;
@@ -118,7 +120,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
     const users = formState.cpj3cUsers || 0;
     const tier = suggestTierByUsersFor("CPJ_3C_PLUS", users);
     const base = getPlanPrice("CPJ_3C_PLUS", tier) || 0;
-    const inc = getPlanInclusions("CPJ_3C_PLUS", tier) as (typeof CPJ3C_PLANS)[typeof tier]["inclusions"] | null;
+    const inc = getPlanInclusions("CPJ_3C_PLUS", tier) as any;
     const consulting = (formState.cpj3cConsultingHours || 0) * pricingRules.FIXED_PRICES.consultingHourly;
     
     if (!inc) {
@@ -303,11 +305,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               </div>
             </div>
           </section>
-          
         </div>
-            </div>
-          </div>
-        </section>
 
         {/* 3. Resumo do Pacote e Exceedências */}
         {selectedTier && (isOffice || isCpj) && (
@@ -319,6 +317,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                   <h3 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-1">📋 Itens Inclusos no Pacote {selectedTier}</h3>
                   <div className="text-xs space-y-2 text-slate-700">
                     {(() => {
+                      if (!selectedTier) return null;
+                      
                       const inclusions = isOffice 
                         ? getPlanInclusions("OFFICE_ADV", selectedTier) as (typeof OFFICE_ADV_PLANS)[typeof selectedTier]["inclusions"]
                         : getPlanInclusions("CPJ_3C_PLUS", selectedTier) as (typeof CPJ3C_PLANS)[typeof selectedTier]["inclusions"];
@@ -394,6 +394,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                   <h3 className="text-sm font-bold text-orange-800 mb-3 flex items-center gap-1">⚡ Excedentes Contratados</h3>
                   <div className="text-xs space-y-2 text-slate-700">
                     {isOffice && (() => {
+                      if (!selectedTier) return null;
                       const officePlanInclusions = getPlanInclusions("OFFICE_ADV", selectedTier) as any;
                       if (!officePlanInclusions) return (
                         <div className="text-center text-slate-500 py-4">
@@ -459,6 +460,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                       );
                     })()}
                     {isCpj && (() => {
+                      if (!selectedTier) return null;
                       const cpjPlanInclusions = getPlanInclusions("CPJ_3C_PLUS", selectedTier) as any;
                       if (!cpjPlanInclusions) return (
                         <div className="text-center text-slate-500 py-4">
