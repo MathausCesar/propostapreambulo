@@ -239,65 +239,72 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
       </div>
 
       <div className="px-8 py-6 space-y-6 content-section print:px-6 print:py-4 print:space-y-4 print-margin">
-        {/* 1. Dados do Cliente e Consultor */}
-        <section className="section-together">
-          <h2 className="section-title text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 print:mb-2">📋 1. Informações Gerais</h2>
-          <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-lg p-4 print:p-3 print-clean force-print-colors">
-            <div className="grid grid-cols-2 gap-6 print:gap-4">
-              {/* Cliente */}
-              <div>
-                <h3 className="text-sm font-bold text-slate-800 mb-3">📄 Cliente</h3>
-                <div className="space-y-2 text-xs text-slate-700">
-                  <div><strong>Empresa:</strong> {formState.clientName || "-"}</div>
-                  <div><strong>Contato:</strong> {formState.clientResponsible || "-"}</div>
-                  <div><strong>Telefone:</strong> {formState.clientPhone || "-"}</div>
-                  <div><strong>E-mail:</strong> {formState.clientEmail || "-"}</div>
+        
+        {/* PÁGINA 1 - INFORMAÇÕES GERAIS E BENEFÍCIOS */}
+        <div className="proposal-page-1 page-content-group">
+          
+          {/* 1. Dados do Cliente e Consultor */}
+          <section className="section-together no-page-break mb-6">
+            <h2 className="section-title text-sm font-bold uppercase tracking-widest text-slate-600 mb-3">📋 1. Informações Gerais</h2>
+            <div className="bg-gradient-to-r from-slate-50 to-blue-50 border border-slate-200 rounded-lg p-4 force-print-colors">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Cliente */}
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 mb-3">📄 Cliente</h3>
+                  <div className="space-y-2 text-xs text-slate-700">
+                    <div><strong>Empresa:</strong> {formState.clientName || "-"}</div>
+                    <div><strong>Contato:</strong> {formState.clientResponsible || "-"}</div>
+                    <div><strong>Telefone:</strong> {formState.clientPhone || "-"}</div>
+                    <div><strong>E-mail:</strong> {formState.clientEmail || "-"}</div>
+                  </div>
                 </div>
-              </div>
-              {/* Consultor */}
-              <div>
-                <h3 className="text-sm font-bold text-slate-800 mb-3">🚀 Consultor</h3>
-                <div className="space-y-2 text-xs text-slate-700">
-                  <div><strong>Nome:</strong> {consultantProfile?.name || "Preâmbulo Informática"}</div>
-                  <div><strong>Telefone:</strong> {consultantProfile?.phone || "-"}</div>
-                  <div><strong>E-mail:</strong> {consultantProfile?.email || "comercial@preambulo.com.br"}</div>
-                  <div><strong>Data:</strong> {new Date().toLocaleDateString("pt-BR")}</div>
-                  <div><strong>Válida por:</strong> {formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</div>
+                {/* Consultor */}
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 mb-3">🚀 Consultor</h3>
+                  <div className="space-y-2 text-xs text-slate-700">
+                    <div><strong>Nome:</strong> {consultantProfile?.name || "Preâmbulo Informática"}</div>
+                    <div><strong>Telefone:</strong> {consultantProfile?.phone || "-"}</div>
+                    <div><strong>E-mail:</strong> {consultantProfile?.email || "comercial@preambulo.com.br"}</div>
+                    <div><strong>Data:</strong> {new Date().toLocaleDateString("pt-BR")}</div>
+                    <div><strong>Válida por:</strong> {formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-
-
-        {/* 2. Benefícios e Diferenciais */}
-        <section className="mb-8">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 flex items-center gap-2">
-            ⭐ 2. Por que escolher {prod.name}?
-          </h2>
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6">
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-sm font-bold text-green-800 mb-3 flex items-center gap-1">🚀 Benefícios Principais</h3>
-                <ul className="text-xs space-y-2 text-slate-700">
-                  <li>✅ Redução de 60% no tempo de tarefas repetitivas</li>
-                  <li>✅ Integração completa com tribunais</li>
-                  <li>✅ Segurança de dados certificada</li>
-                  <li>✅ Suporte especializado incluso</li>
-                  <li>✅ Atualizações automáticas</li>
-                </ul>
+          {/* 2. Benefícios e Diferenciais */}
+          <section className="section-together no-page-break mb-6">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
+              ⭐ 2. Por que escolher {prod.name}?
+            </h2>
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-xl p-6 force-print-colors">
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-sm font-bold text-green-800 mb-3 flex items-center gap-1">🚀 Benefícios Principais</h3>
+                  <ul className="text-xs space-y-2 text-slate-700">
+                    <li>✅ Redução de 60% no tempo de tarefas repetitivas</li>
+                    <li>✅ Integração completa com tribunais</li>
+                    <li>✅ Segurança de dados certificada</li>
+                    <li>✅ Suporte especializado incluso</li>
+                    <li>✅ Atualizações automáticas</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-1">🛡️ Garantias</h3>
+                  <ul className="text-xs space-y-2 text-slate-700">
+                    <li>🔒 Backup automático em nuvem</li>
+                    <li>📞 Suporte técnico prioritário</li>
+                    <li>🔄 Migração de dados assistida</li>
+                    <li>📚 Treinamento da equipe incluso</li>
+                    <li>⏰ SLA de 99,9% de disponibilidade</li>
+                  </ul>
+                </div>
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-blue-800 mb-3 flex items-center gap-1">🛡️ Garantias</h3>
-                <ul className="text-xs space-y-2 text-slate-700">
-                  <li>🔒 Backup automático em nuvem</li>
-                  <li>📞 Suporte técnico prioritário</li>
-                  <li>🔄 Migração de dados assistida</li>
-                  <li>📚 Treinamento da equipe incluso</li>
-                  <li>⏰ SLA de 99,9% de disponibilidade</li>
-                </ul>
-              </div>
+            </div>
+          </section>
+          
+        </div>
             </div>
           </div>
         </section>
@@ -516,21 +523,24 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </section>
         )}
 
-        {/* 4. Investimento Mensal - container protegido */}
-        <section className="section-together">
-          <div className="no-page-break">
-            <div className="flex items-end justify-between mb-3">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-                💰 4. Investimento Mensal
-              </h2>
-              <div className="text-right">
-                <div className="text-xs text-slate-500">Total Mensal</div>
-                <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
-                <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+        {/* PÁGINA 2 CONTINUAÇÃO - INVESTIMENTO */}
+        <div className="investment-section page-content-group">
+          
+          {/* 4. Investimento Mensal */}
+          <section className="investment-table-container section-together">
+            <div className="no-page-break">
+              <div className="flex items-end justify-between mb-3">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
+                  💰 4. Investimento Mensal
+                </h2>
+                <div className="text-right">
+                  <div className="text-xs text-slate-500">Total Mensal</div>
+                  <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
+                  <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+                </div>
               </div>
-            </div>
-            {monthlyItems.length === 0 ? (
-              <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
+              {monthlyItems.length === 0 ? (
+                <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
             ) : (
             <div className="overflow-hidden rounded-lg border border-slate-200 section-together print-clean">
               <table className="investment-table w-full text-sm">
@@ -560,14 +570,14 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
           </div>
         </section>
 
-        {/* 5. Investimento Inicial */}
-        <section>
-          <div className="flex items-end justify-between mb-3">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-              🚀 5. Investimento Inicial (Setup)
-            </h2>
-            <div className="text-right">
-              <div className="text-xs text-slate-500">Total Setup</div>
+          {/* 5. Investimento Inicial */}
+          <section className="investment-table-container section-together">
+            <div className="flex items-end justify-between mb-3">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
+                🚀 5. Investimento Inicial (Setup)
+              </h2>
+              <div className="text-right">
+                <div className="text-xs text-slate-500">Total Setup</div>
               <div className="text-2xl font-extrabold text-slate-900">{formatCurrency(setupTotal)}</div>
             </div>
           </div>
@@ -596,75 +606,82 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
             </div>
           )}
         </section>
+        
+        </div>
 
-        {/* 6. Condições de Pagamento */}
-        <section>
-          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
-            💳 6. Condições de Pagamento
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-xl border border-slate-200 p-5 bg-white">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Investimento Inicial</h3>
-              <div className="text-sm space-y-2">
-                <div><span className="text-slate-600">Data de Pagamento:</span> <strong>{formState.firstPaymentDate ? formatDate(formState.firstPaymentDate) : "-"}</strong></div>
-                <div><span className="text-slate-600">Parcelas:</span> <strong>{formState.setupInstallments || 1}x</strong></div>
-                {formState.setupDiscountValue && <div><span className="text-slate-600">Desconto:</span> <strong>{formState.setupDiscountValue}%</strong></div>}
-                <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
-                  <div>Valor total: <strong className="text-slate-700">{formatCurrency(setupTotal)}</strong></div>
-                  {(formState.setupInstallments || 1) > 1 && (
-                    <div>Parcela: <strong className="text-slate-700">{formatCurrency(setupTotal / (formState.setupInstallments || 1))}</strong></div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="rounded-xl border border-slate-200 p-5 bg-white">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Mensalidade</h3>
-              <div className="text-sm space-y-2">
-                <div><span className="text-slate-600">Início da Cobrança:</span> <strong>{formState.firstMonthlyDate ? formatDate(formState.firstMonthlyDate) : "-"}</strong></div>
-                {(formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue) ? (
-                  <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
-                ) : null}
-                <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
-                  <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
-                  <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* PÁGINA 3 - CONDIÇÕES COMERCIAIS E ACEITE */}
+        <div className="proposal-page-3 page-break page-content-group">
 
-        {/* 7. Observações */}
-        {formState.observations && (
-          <section>
+          {/* 6. Condições de Pagamento */}
+          <section className="commercial-conditions-section section-together">
             <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
-              📝 7. Observações
+              💳 6. Condições de Pagamento
             </h2>
-            <div className="rounded-xl border border-slate-200 p-5 bg-slate-50">
-              <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">{formState.observations}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="rounded-xl border border-slate-200 p-5 bg-white">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Investimento Inicial</h3>
+                <div className="text-sm space-y-2">
+                  <div><span className="text-slate-600">Data de Pagamento:</span> <strong>{formState.firstPaymentDate ? formatDate(formState.firstPaymentDate) : "-"}</strong></div>
+                  <div><span className="text-slate-600">Parcelas:</span> <strong>{formState.setupInstallments || 1}x</strong></div>
+                  {formState.setupDiscountValue && <div><span className="text-slate-600">Desconto:</span> <strong>{formState.setupDiscountValue}%</strong></div>}
+                  <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
+                    <div>Valor total: <strong className="text-slate-700">{formatCurrency(setupTotal)}</strong></div>
+                    {(formState.setupInstallments || 1) > 1 && (
+                      <div>Parcela: <strong className="text-slate-700">{formatCurrency(setupTotal / (formState.setupInstallments || 1))}</strong></div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-slate-200 p-5 bg-white">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Mensalidade</h3>
+                <div className="text-sm space-y-2">
+                  <div><span className="text-slate-600">Início da Cobrança:</span> <strong>{formState.firstMonthlyDate ? formatDate(formState.firstMonthlyDate) : "-"}</strong></div>
+                  {(formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue) ? (
+                    <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
+                  ) : null}
+                  <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
+                    <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
+                    <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
-        )}
 
-        {/* 8. Assinaturas - Manter junto com footer */}
-        <section className="pt-4 no-page-break signature-section">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 flex items-center gap-2">
-            ✍️ Aceite da Proposta
-          </h3>
-          <div className="grid grid-cols-2 gap-8">
-            <div className="text-center">
-              <div className="h-16"></div>
-              <div className="border-t-2 border-slate-400 pt-2">
-                <p className="text-xs font-bold text-slate-700">Cliente</p>
+          {/* 7. Observações */}
+          {formState.observations && (
+            <section className="section-together">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-3 flex items-center gap-2">
+                📝 7. Observações
+              </h2>
+              <div className="rounded-xl border border-slate-200 p-5 bg-slate-50">
+                <p className="text-sm text-slate-800 whitespace-pre-wrap leading-relaxed">{formState.observations}</p>
+              </div>
+            </section>
+          )}
+
+          {/* 8. Assinaturas - Manter junto com footer */}
+          <section className="pt-4 no-page-break signature-section">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-slate-600 mb-4 flex items-center gap-2">
+              ✍️ Aceite da Proposta
+            </h3>
+            <div className="grid grid-cols-2 gap-8">
+              <div className="text-center">
+                <div className="h-16"></div>
+                <div className="border-t-2 border-slate-400 pt-2">
+                  <p className="text-xs font-bold text-slate-700">Cliente</p>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="h-16"></div>
+                <div className="border-t-2 border-slate-400 pt-2">
+                  <p className="text-xs font-bold text-slate-700">Preâmbulo Informática</p>
+                </div>
               </div>
             </div>
-            <div className="text-center">
-              <div className="h-16"></div>
-              <div className="border-t-2 border-slate-400 pt-2">
-                <p className="text-xs font-bold text-slate-700">Preâmbulo Informática</p>
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
+
+        </div>
 
         {/* Footer - Manter junto com assinaturas */}
         <footer className="footer-section text-center no-page-break">

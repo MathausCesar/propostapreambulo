@@ -381,6 +381,55 @@ const App: React.FC = () => {
             margin: 0 auto !important;
             padding: 20px !important;
           }
+          /* Estrutura modular das páginas */
+          .page-content-group {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            margin-bottom: 2rem !important;
+          }
+          .proposal-page-1 {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+          .proposal-page-2 {
+            page-break-before: auto !important;
+            break-before: auto !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+          .proposal-page-3 {
+            page-break-before: auto !important;
+            break-before: auto !important;
+          }
+          /* Seções sempre juntas */
+          .section-together {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+            margin-bottom: 1.5rem !important;
+          }
+          .section-together + .section-together {
+            page-break-before: avoid !important;
+            break-before: avoid !important;
+          }
+          /* Tabelas de investimento protegidas */
+          .investment-table-container {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            margin: 1rem 0 !important;
+          }
+          .investment-table-container table {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          /* Condições comerciais sempre juntas */
+          .commercial-conditions-section {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            page-break-before: avoid !important;
+            break-before: avoid !important;
+          }
           /* Manter assinatura e footer juntos */
           .signature-section {
             page-break-inside: avoid !important;
@@ -1153,6 +1202,55 @@ const handleChange =
                           max-width: none !important;
                           margin: 0 auto !important;
                           padding: 20px !important;
+                        }
+                        /* Estrutura modular das páginas */
+                        .page-content-group {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                          margin-bottom: 2rem !important;
+                        }
+                        .proposal-page-1 {
+                          page-break-after: avoid !important;
+                          break-after: avoid !important;
+                        }
+                        .proposal-page-2 {
+                          page-break-before: auto !important;
+                          break-before: auto !important;
+                          page-break-after: avoid !important;
+                          break-after: avoid !important;
+                        }
+                        .proposal-page-3 {
+                          page-break-before: auto !important;
+                          break-before: auto !important;
+                        }
+                        /* Seções sempre juntas */
+                        .section-together {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                          page-break-after: avoid !important;
+                          break-after: avoid !important;
+                          margin-bottom: 1.5rem !important;
+                        }
+                        .section-together + .section-together {
+                          page-break-before: avoid !important;
+                          break-before: avoid !important;
+                        }
+                        /* Tabelas de investimento protegidas */
+                        .investment-table-container {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                          margin: 1rem 0 !important;
+                        }
+                        .investment-table-container table {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                        }
+                        /* Condições comerciais sempre juntas */
+                        .commercial-conditions-section {
+                          page-break-inside: avoid !important;
+                          break-inside: avoid !important;
+                          page-break-before: avoid !important;
+                          break-before: avoid !important;
                         }
                         /* Manter assinatura e footer juntos */
                         .signature-section {
