@@ -394,7 +394,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                 <div>
                   <h3 className="text-sm font-bold text-orange-800 mb-3 flex items-center gap-1">⚡ Excedentes Contratados</h3>
                   <div className="text-xs space-y-2 text-slate-700">
-                    {isOffice && (() => {
+                    {isOffice ? (() => {
                       if (!selectedTier) return null;
                       const officePlanInclusions = getPlanInclusions("OFFICE_ADV", selectedTier) as any;
                       if (!officePlanInclusions) return (
@@ -459,8 +459,8 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                           )}
                         </>
                       );
-                    })()}
-                    {isCpj && (() => {
+                    })() : null}
+                    {isCpj ? (() => {
                       if (!selectedTier) return null;
                       const cpjPlanInclusions = getPlanInclusions("CPJ_3C_PLUS", selectedTier) as any;
                       if (!cpjPlanInclusions) return (
@@ -518,7 +518,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                           )}
                         </>
                       );
-                    })()}
+                    })() : null}
                   </div>
                 </div>
               </div>
