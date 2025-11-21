@@ -205,46 +205,47 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
       } as React.CSSProperties}
     >
       {/* CSS adaptativo será aplicado via classes CSS externas */}
-      {/* Header */}
-      <div className="relative header-section no-page-break">
-        <div className="bg-gradient-to-r from-[#0A1B3F] via-[#0A0F1F] to-black text-white px-8 py-6 flex items-center justify-between print:px-6 print:py-4">
-          <div className="flex items-center gap-4">
-            <img src={preambutoImg} alt="Preâmbulo" className="h-10 w-auto object-contain print:h-8" />
-          </div>
-          <div className="text-center">
-            <div className="text-xs tracking-widest uppercase opacity-80">Documento</div>
-            <div className="text-xl font-extrabold print:text-lg">Proposta Comercial</div>
-          </div>
-          <div className="flex items-center gap-4">
-            <img src={prod.logo} alt={prod.name} className="h-10 w-auto object-contain print:h-8" />
-          </div>
-        </div>
-        <div className="px-8 py-3 bg-[#0f172a] text-blue-100 flex items-center justify-between print:px-6 print:py-2">
-          <div className="text-sm min-w-0 flex-1">
-            <div className="opacity-80 text-xs mb-1">Produto</div>
-            <div className="font-semibold text-white">{prod.name}</div>
-          </div>
-          {selectedTier && (
-            <div className="text-sm text-center min-w-0 flex-1">
-              <div className="opacity-80 text-xs mb-1 whitespace-nowrap">Plano Selecionado</div>
-              <div className="font-semibold text-white bg-blue-600 px-4 py-1.5 rounded-full text-sm whitespace-nowrap">{selectedTier}</div>
-            </div>
-          )}
-          <div className="text-sm text-right min-w-0 flex-1">
-            <div className="opacity-80 text-xs mb-1">Validade</div>
-            <div className="font-semibold text-white">{(() => {
-              const validDate = new Date();
-              validDate.setDate(validDate.getDate() + 30);
-              return validDate.toLocaleDateString("pt-BR");
-            })()}</div>
-          </div>
-        </div>
-      </div>
-
+      
       <div className="px-8 py-6 space-y-6 content-section print:px-6 print:py-4 print:space-y-4 print-margin">
         
-        {/* PÁGINA 1 - INFORMAÇÕES GERAIS E BENEFÍCIOS */}
+        {/* PÁGINA 1 - INFORMAÇÕES GERAIS */}
         <div className="proposal-page-1 page-content-group">
+          
+          {/* Header - Manter junto com conteúdo da página 1 */}
+          <div className="relative header-section no-page-break mb-6">
+            <div className="bg-gradient-to-r from-[#0A1B3F] via-[#0A0F1F] to-black text-white px-8 py-6 flex items-center justify-between print:px-6 print:py-4">
+              <div className="flex items-center gap-4">
+                <img src={preambutoImg} alt="Preâmbulo" className="h-10 w-auto object-contain print:h-8" />
+              </div>
+              <div className="text-center">
+                <div className="text-xs tracking-widest uppercase opacity-80">Documento</div>
+                <div className="text-xl font-extrabold print:text-lg">Proposta Comercial</div>
+              </div>
+              <div className="flex items-center gap-4">
+                <img src={prod.logo} alt={prod.name} className="h-10 w-auto object-contain print:h-8" />
+              </div>
+            </div>
+            <div className="px-8 py-3 bg-[#0f172a] text-blue-100 flex items-center justify-between print:px-6 print:py-2">
+              <div className="text-sm min-w-0 flex-1">
+                <div className="opacity-80 text-xs mb-1">Produto</div>
+                <div className="font-semibold text-white">{prod.name}</div>
+              </div>
+              {selectedTier && (
+                <div className="text-sm text-center min-w-0 flex-1">
+                  <div className="opacity-80 text-xs mb-1 whitespace-nowrap">Plano Selecionado</div>
+                  <div className="font-semibold text-white bg-blue-600 px-4 py-1.5 rounded-full text-sm whitespace-nowrap">{selectedTier}</div>
+                </div>
+              )}
+              <div className="text-sm text-right min-w-0 flex-1">
+                <div className="opacity-80 text-xs mb-1">Validade</div>
+                <div className="font-semibold text-white">{(() => {
+                  const validDate = new Date();
+                  validDate.setDate(validDate.getDate() + 30);
+                  return validDate.toLocaleDateString("pt-BR");
+                })()}</div>
+              </div>
+            </div>
+          </div>
           
           {/* 1. Dados do Cliente e Consultor */}
           <section className="section-together no-page-break mb-6">
