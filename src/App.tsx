@@ -1317,6 +1317,35 @@ const handleChange =
                     
                     printWindow.document.close();
                     
+                    // Salva automaticamente no histórico antes de imprimir
+                    if (consultantProfile) {
+                      const now = new Date().toISOString();
+                      const monthlyFinal = formState.monthlyFee || 0;
+                      const setupFinal = formState.setupFee || 0;
+
+                      const newProposal: SavedProposal = {
+                        id: (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID() : String(Date.now()),
+                        createdAt: now,
+                        updatedAt: now,
+                        erp: formState.erp,
+                        clientName: formState.clientName || "Sem nome",
+                        consultant: consultantProfile,
+                        monthlyFinal,
+                        setupFinal,
+                        formState,
+                      };
+
+                      setHistory((prev) => {
+                        const next = [...prev, newProposal];
+                        try {
+                          localStorage.setItem("proposalsHistory", JSON.stringify(next));
+                        } catch (e) {
+                          console.error("Erro ao salvar histórico", e);
+                        }
+                        return next;
+                      });
+                    }
+                    
                     // Aguarda carregar e imprime
                     setTimeout(() => {
                       printWindow.print();
