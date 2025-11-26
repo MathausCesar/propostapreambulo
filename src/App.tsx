@@ -399,26 +399,46 @@ const App: React.FC = () => {
         
         const safeName = proposal.clientName.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
         const filename = `proposta-${safeName}.pdf`;
+        
+        // Salva o PDF
         pdf.save(filename);
         
         const message = "Prezados, agradeço a oportunidade de apresentar nosso sistema de gestão e as grandes melhorias que podemos proporcionar para sua operação, como combinamos segue nossa proposta.";
-        try { await navigator.clipboard.writeText(message); } catch {}
         
-        const encoded = encodeURIComponent(message);
-        // Extrai telefone do cliente (remove caracteres não numéricos)
-        const clientPhone = (proposal.formState?.clientPhone || '').replace(/\D/g, '');
+        // Copia mensagem para área de transferência
+        try { 
+          await navigator.clipboard.writeText(message);
+        } catch {}
         
-        if (clientPhone) {
-          // Usa número específico do cliente
-          let opened = window.open(`whatsapp://send?phone=${clientPhone}&text=${encoded}`, '_blank');
-          if (!opened) {
-            window.open(`https://wa.me/${clientPhone}?text=${encoded}`, '_blank');
-          }
-        } else {
-          // Fallback sem número
-          let opened = window.open(`whatsapp://send?text=${encoded}`, '_blank');
-          if (!opened) {
-            window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        // Mostra instruções amigáveis
+        const confirmed = window.confirm(
+          `✅ PDF baixado com sucesso!\n✅ Mensagem copiada para a área de transferência!\n\n` +
+          `📋 Arquivo: ${filename}\n\n` +
+          `💬 Próximos passos:\n` +
+          `1. Vou abrir o WhatsApp do cliente\n` +
+          `2. Cole a mensagem (Ctrl+V)\n` +
+          `3. Arraste o PDF baixado para anexar\n` +
+          `4. Envie! 🚀\n\n` +
+          `Clique OK para abrir o WhatsApp`
+        );
+        
+        if (confirmed) {
+          const encoded = encodeURIComponent(message);
+          // Extrai telefone do cliente (remove caracteres não numéricos)
+          const clientPhone = (proposal.formState?.clientPhone || '').replace(/\D/g, '');
+          
+          if (clientPhone) {
+            // Usa número específico do cliente
+            let opened = window.open(`whatsapp://send?phone=${clientPhone}&text=${encoded}`, '_blank');
+            if (!opened) {
+              window.open(`https://wa.me/${clientPhone}?text=${encoded}`, '_blank');
+            }
+          } else {
+            // Fallback sem número
+            let opened = window.open(`whatsapp://send?text=${encoded}`, '_blank');
+            if (!opened) {
+              window.open(`https://wa.me/?text=${encoded}`, '_blank');
+            }
           }
         }
       } catch (e) {
