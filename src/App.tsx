@@ -348,37 +348,53 @@ const App: React.FC = () => {
       const el = document.getElementById("history-pdf");
       if (!el) { setIsPrinting(false); setPdfTarget(null); return; }
       try {
-        // Multi-page PDF generation
-        const pdf = new jsPDF('p', 'pt', 'a4');
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
+        // Multi-page PDF generation with proper A4 dimensions
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
         
-        // Captura todo o elemento com scroll
+        // A4 em pixels @ 96 DPI (padrão web): 210mm = 794px, 297mm = 1123px
+        const a4WidthPx = 794;
+        const a4HeightPx = 1123;
+        
+        // Força o elemento a ter largura A4
+        const originalWidth = el.style.width;
+        el.style.width = `${a4WidthPx}px`;
+        
+        // Aguarda reflow
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Captura com escala adequada mantendo proporções A4
         const canvas = await html2canvas(el, { 
-          scale: 2, 
-          useCORS: true, 
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
           backgroundColor: '#ffffff',
-          windowHeight: el.scrollHeight,
-          height: el.scrollHeight 
+          width: a4WidthPx,
+          windowWidth: a4WidthPx,
+          logging: false
         });
         
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = pageWidth;
-        const imgHeight = (canvas.height * pageWidth) / canvas.width;
+        // Restaura largura original
+        el.style.width = originalWidth;
+        
+        const imgData = canvas.toDataURL('image/png', 1.0);
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
         
         let heightLeft = imgHeight;
         let position = 0;
         
         // Adiciona primeira página
         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        heightLeft -= pdfHeight;
         
         // Adiciona páginas subsequentes se necessário
         while (heightLeft > 0) {
           position = heightLeft - imgHeight;
           pdf.addPage();
           pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
+          heightLeft -= pdfHeight;
         }
         
         const safeName = proposal.clientName.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
