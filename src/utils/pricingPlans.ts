@@ -142,12 +142,19 @@ export const CPJ3C_UNIT_PRICES = {
 };
 
 /**
- * Pacotes de monitoramento (Office ADV) - cobrados por PACOTE fechado
- * 250 (3000/ano) @0.40 | 500 (6000/ano) @0.30 | 1000 (12000/ano) @0.20 | 2000 (24000/ano) @0.15 | >2000 @0.12 (personalizado)
- * Mantém compatibilidade para CPJ usando mesmos tiers.
+ * Pacotes de monitoramento Office ADV (pacotes fechados)
  */
-export const MONITORING_TIERS = [
+export const OFFICE_MONITORING_TIERS = [
   { limit: 250, annualLimit: 3000, price: 0.40 },
+  { limit: 500, annualLimit: 6000, price: 0.30 },
+  { limit: 1000, annualLimit: 12000, price: 0.20 },
+  { limit: 2000, annualLimit: 24000, price: 0.15 },
+  { limit: Infinity, annualLimit: Infinity, price: 0.12 },
+];
+/**
+ * Pacotes de monitoramento CPJ-3C+ (mantém tabela anterior)
+ */
+export const CPJ_MONITORING_TIERS = [
   { limit: 500, annualLimit: 6000, price: 0.30 },
   { limit: 1000, annualLimit: 12000, price: 0.20 },
   { limit: 2000, annualLimit: 24000, price: 0.15 },
@@ -155,11 +162,19 @@ export const MONITORING_TIERS = [
 ];
 
 /**
- * Pacotes de distribuição (Office ADV) - cobrados por PACOTE fechado
- * 10 (120/ano) @30 | 20 (240/ano) @25 | 50 (600/ano) @20 | 100 (1200/ano) @15 | >100 @12 (personalizado)
+ * Pacotes de distribuição Office ADV (pacotes fechados)
  */
-export const DISTRIBUTION_TIERS = [
+export const OFFICE_DISTRIBUTION_TIERS = [
   { limit: 10, annualLimit: 120, price: 30 },
+  { limit: 20, annualLimit: 240, price: 25 },
+  { limit: 50, annualLimit: 600, price: 20 },
+  { limit: 100, annualLimit: 1200, price: 15 },
+  { limit: Infinity, annualLimit: Infinity, price: 12 },
+];
+/**
+ * Pacotes de distribuição CPJ-3C+ (mantém tabela anterior)
+ */
+export const CPJ_DISTRIBUTION_TIERS = [
   { limit: 20, annualLimit: 240, price: 25 },
   { limit: 50, annualLimit: 600, price: 20 },
   { limit: 100, annualLimit: 1200, price: 15 },
@@ -167,11 +182,19 @@ export const DISTRIBUTION_TIERS = [
 ];
 
 /**
- * Pacotes de protocolo (Office ADV) - cobrados por PACOTE fechado
- * 125 (1500/ano) @2.80 | 250 (3000/ano) @2.50 | 417 (5000/ano) @2.20 | 833 (10000/ano) @2.00 | >833 @1.80 (personalizado)
+ * Pacotes de protocolo Office ADV (pacotes fechados)
  */
-export const PROTOCOL_TIERS = [
+export const OFFICE_PROTOCOL_TIERS = [
   { limit: 125, annualLimit: 1500, price: 2.80 },
+  { limit: 250, annualLimit: 3000, price: 2.50 },
+  { limit: 417, annualLimit: 5000, price: 2.20 },
+  { limit: 833, annualLimit: 10000, price: 2.00 },
+  { limit: Infinity, annualLimit: Infinity, price: 1.80 },
+];
+/**
+ * Pacotes de protocolo CPJ-3C+ (mantém tabela anterior)
+ */
+export const CPJ_PROTOCOL_TIERS = [
   { limit: 250, annualLimit: 3000, price: 2.50 },
   { limit: 417, annualLimit: 5000, price: 2.20 },
   { limit: 833, annualLimit: 10000, price: 2.00 },
@@ -307,9 +330,9 @@ export function calculateOfficeExceedances(params: {
   const pubPrice = pubExceed * OFFICE_UNIT_PRICES.publication;
   
   // PACOTES FECHADOS: Cliente contrata o pacote completo baseado na necessidade anual
-  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
-  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
-  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, OFFICE_MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, OFFICE_DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, OFFICE_PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
   const docPrice = docExceed > 0 ? calculateClosedPackagePrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
   const intimPrice = intimExceed * OFFICE_UNIT_PRICES.intimation;
   const financePrice = params.includeFinance && !params.planInclusions.financeIncluded
@@ -399,9 +422,9 @@ export function calculateCpj3cExceedances(params: {
   const pubPrice = pubExceed * CPJ3C_UNIT_PRICES.publication;
   
   // PACOTES FECHADOS: Cliente contrata o pacote completo baseado na necessidade anual
-  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
-  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
-  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const monPrice = monExceed > 0 ? calculateClosedPackagePrice(monExceed, CPJ_MONITORING_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const distPrice = distExceed > 0 ? calculateClosedPackagePrice(distExceed, CPJ_DISTRIBUTION_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
+  const protPrice = protExceed > 0 ? calculateClosedPackagePrice(protExceed, CPJ_PROTOCOL_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
   const docPrice = docExceed > 0 ? calculateClosedPackagePrice(docExceed, AI_DOCS_TIERS) : { monthlyPrice: 0, tier: 0, packageLimit: 0, annualLimit: 0 };
 
   const total =
