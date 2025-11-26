@@ -238,11 +238,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
               )}
               <div className="text-sm text-right min-w-0 flex-1">
                 <div className="opacity-80 text-xs mb-1">Validade</div>
-                <div className="font-semibold text-white">{(() => {
-                  const validDate = new Date();
-                  validDate.setDate(validDate.getDate() + 30);
-                  return validDate.toLocaleDateString("pt-BR");
-                })()}</div>
+                <div className="font-semibold text-white">{formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</div>
               </div>
             </div>
           </div>
@@ -270,7 +266,6 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                     <div><strong>Telefone:</strong> {consultantProfile?.phone || "-"}</div>
                     <div><strong>E-mail:</strong> {consultantProfile?.email || "comercial@preambulo.com.br"}</div>
                     <div><strong>Data:</strong> {new Date().toLocaleDateString("pt-BR")}</div>
-                    <div><strong>Válida por:</strong> {formState.proposalValidityDate ? `até ${new Date(formState.proposalValidityDate).toLocaleDateString('pt-BR')}` : `${formState.proposalValidityDays || 30} dias`}</div>
                   </div>
                 </div>
               </div>
@@ -317,7 +312,7 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                           {isOffice && 'financeIncluded' in inclusions && (
                             <div className="flex justify-between items-center bg-white/50 px-3 py-1.5 rounded-lg">
                               <span>• Financeiro:</span>
-                              <strong className="text-blue-800">{inclusions.financeIncluded ? 'Incluído' : 'Não incluído'}</strong>
+                              <strong className="text-blue-800">{selectedTier === 'ONE' ? 'Padrão' : 'Avançado'}</strong>
                             </div>
                           )}
                           {isCpj && 'nfe' in inclusions && (
