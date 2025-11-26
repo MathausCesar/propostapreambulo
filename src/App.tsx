@@ -324,10 +324,12 @@ const App: React.FC = () => {
 
   // PDF from history state
   const [pdfTarget, setPdfTarget] = useState<SavedProposal | null>(null);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   const handleViewPdfFromHistory = async (id: string) => {
     const proposal = history.find((p) => p.id === id) as SavedProposal | undefined;
     if (!proposal) return;
+    setIsPrinting(true);
     setPdfTarget(proposal);
   };
 
@@ -504,6 +506,7 @@ const App: React.FC = () => {
         setTimeout(() => {
           printWindow.close();
           setPdfTarget(null);
+          setIsPrinting(false);
         }, 500);
       }, 1000);
     };
@@ -988,6 +991,18 @@ const handleChange =
             </div>
           )}
 
+          {isPrinting && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="bg-slate-900 text-white px-6 py-4 rounded-xl border border-white/10 shadow-2xl flex items-center gap-3">
+                <svg className="w-5 h-5 animate-spin text-cyan-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                </svg>
+                <span>Preparando impressão…</span>
+              </div>
+            </div>
+          )}
+
           {history.length === 0 ? (
             <div className="text-center py-20">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 max-w-2xl mx-auto">
@@ -1032,6 +1047,17 @@ const handleChange =
   return (
     <PremiumLayout onSidebarToggle={handleSidebarToggle}>
       <NavigationMenu />
+      {isPrinting && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-slate-900 text-white px-6 py-4 rounded-xl border border-white/10 shadow-2xl flex items-center gap-3">
+            <svg className="w-5 h-5 animate-spin text-cyan-300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <span>Preparando impressão…</span>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto">
           {/* Hidden renderer for history PDF capture */}
@@ -1306,9 +1332,12 @@ const handleChange =
                       }
                     `;
                     
+                    // Indica status de impressão
+                    setIsPrinting(true);
+
                     // Cria uma nova janela para impressão
                     const printWindow = window.open('', '_blank');
-                    if (!printWindow) return;
+                    if (!printWindow) { setIsPrinting(false); return; }
                     
                     // Monta o HTML da janela de impressão
                     printWindow.document.write(`
@@ -1364,6 +1393,7 @@ const handleChange =
                       printWindow.print();
                       setTimeout(() => {
                         printWindow.close();
+                        setIsPrinting(false);
                       }, 500);
                     }, 1000);
                 }} className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">

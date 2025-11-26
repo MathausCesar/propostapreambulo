@@ -186,7 +186,7 @@ export function ProposalList({ proposals, onReopen, onDelete, onViewPdf }: Propo
                 <div className="flex gap-2">
                   <button
                     onClick={() => onViewPdf?.(proposal.id)}
-                    title="Imprimir Proposta"
+                    title="Imprimir"
                     className="p-3 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/30 hover:border-emerald-400/50 rounded-xl transition-all duration-300 text-emerald-300 hover:text-emerald-200 group-hover:scale-110"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
