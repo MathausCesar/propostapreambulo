@@ -348,29 +348,62 @@ const App: React.FC = () => {
       const el = document.getElementById("history-pdf");
       if (!el) { setIsPrinting(false); setPdfTarget(null); return; }
       try {
-        // Captura canvas da proposta
-        const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
-        const imgData = canvas.toDataURL('image/png');
+        // Multi-page PDF generation
         const pdf = new jsPDF('p', 'pt', 'a4');
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
-        // Ajusta imagem para largura da página mantendo proporção
-        const ratio = canvas.width / canvas.height;
-        let renderHeight = pageWidth / ratio;
-        if (renderHeight > pageHeight) {
-          // Redimensiona caso exceda altura
-          renderHeight = pageHeight;
+        
+        // Captura todo o elemento com scroll
+        const canvas = await html2canvas(el, { 
+          scale: 2, 
+          useCORS: true, 
+          backgroundColor: '#ffffff',
+          windowHeight: el.scrollHeight,
+          height: el.scrollHeight 
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * pageWidth) / canvas.width;
+        
+        let heightLeft = imgHeight;
+        let position = 0;
+        
+        // Adiciona primeira página
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        
+        // Adiciona páginas subsequentes se necessário
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
         }
-        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, renderHeight);
+        
         const safeName = proposal.clientName.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
         const filename = `proposta-${safeName}.pdf`;
         pdf.save(filename);
+        
         const message = "Prezados, agradeço a oportunidade de apresentar nosso sistema de gestão e as grandes melhorias que podemos proporcionar para sua operação, como combinamos segue nossa proposta.";
         try { await navigator.clipboard.writeText(message); } catch {}
+        
         const encoded = encodeURIComponent(message);
-        let opened = window.open(`whatsapp://send?text=${encoded}`, '_blank');
-        if (!opened) {
-          window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        // Extrai telefone do cliente (remove caracteres não numéricos)
+        const clientPhone = (proposal.formState?.clientPhone || '').replace(/\D/g, '');
+        
+        if (clientPhone) {
+          // Usa número específico do cliente
+          let opened = window.open(`whatsapp://send?phone=${clientPhone}&text=${encoded}`, '_blank');
+          if (!opened) {
+            window.open(`https://wa.me/${clientPhone}?text=${encoded}`, '_blank');
+          }
+        } else {
+          // Fallback sem número
+          let opened = window.open(`whatsapp://send?text=${encoded}`, '_blank');
+          if (!opened) {
+            window.open(`https://wa.me/?text=${encoded}`, '_blank');
+          }
         }
       } catch (e) {
         console.error('Erro ao gerar PDF para WhatsApp', e);
