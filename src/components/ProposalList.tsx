@@ -18,9 +18,10 @@ interface ProposalListProps {
   onReopen?: (proposal: any) => void;
   onDelete?: (id: string) => void;
   onViewPdf?: (id: string) => void;
+  onShareWhatsApp?: (id: string) => void;
 }
 
-export function ProposalList({ proposals, onReopen, onDelete, onViewPdf }: ProposalListProps) {
+export function ProposalList({ proposals, onReopen, onDelete, onViewPdf, onShareWhatsApp }: ProposalListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterErp, setFilterErp] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"date" | "value">("date");
@@ -191,6 +192,15 @@ export function ProposalList({ proposals, onReopen, onDelete, onViewPdf }: Propo
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => onShareWhatsApp?.(proposal.id)}
+                    title="Enviar via WhatsApp"
+                    className="p-3 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 hover:border-green-500/50 rounded-xl transition-all duration-300 text-green-400 hover:text-green-300 group-hover:scale-110"
+                  >
+                    <svg viewBox="0 0 32 32" className="w-5 h-5" fill="currentColor">
+                      <path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.64.84 5.08 2.28 7.12L4 29l7.12-2.24c1.96 1.32 4.32 2.08 6.88 2.08 6.64 0 12.04-5.4 12.04-12.04S22.68 3 16.04 3zm0 21.92c-2.36 0-4.56-.72-6.4-2.04l-.48-.32-4.2 1.32 1.36-4.08-.32-.52c-1.32-2-2.04-4.28-2.04-6.68 0-6.04 4.92-10.96 10.96-10.96 6.04 0 10.96 4.92 10.96 10.96 0 6.04-4.92 10.96-10.96 10.96zm6.04-8.2c-.32-.16-1.84-.92-2.12-1.04-.28-.12-.48-.16-.68.16-.2.32-.8 1.04-.96 1.24-.16.2-.36.24-.68.08-.32-.16-1.36-.5-2.6-1.6-.96-.84-1.6-1.88-1.76-2.2-.16-.32-.02-.48.14-.64.14-.14.32-.36.48-.54.16-.18.22-.3.34-.5.12-.2.06-.36-.02-.52-.08-.16-.68-1.64-.94-2.24-.24-.56-.48-.48-.68-.48-.18 0-.38-.02-.58-.02-.2 0-.52.08-.8.36-.28.32-1.04 1.02-1.04 2.48s1.06 2.88 1.22 3.08c.16.2 2.08 3.18 5.04 4.46.7.3 1.24.48 1.66.62.7.22 1.34.18 1.84.1.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.18-1.38-.06-.12-.28-.2-.6-.36z" />
                     </svg>
                   </button>
                   <button

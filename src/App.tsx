@@ -5,6 +5,8 @@ import React, {
   ChangeEvent,
   FormEvent,
 } from "react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import {
   ProposalFormState,
   ErpProduct,
@@ -331,6 +333,50 @@ const App: React.FC = () => {
     if (!proposal) return;
     setIsPrinting(true);
     setPdfTarget(proposal);
+  };
+
+  const handleShareWhatsAppFromHistory = async (id: string) => {
+    const proposal = history.find((p) => p.id === id) as SavedProposal | undefined;
+    if (!proposal) return;
+    setPdfTarget(proposal);
+    setIsPrinting(true);
+    // Aguarda renderização oculta
+    setTimeout(async () => {
+      const el = document.getElementById("history-pdf");
+      if (!el) { setIsPrinting(false); setPdfTarget(null); return; }
+      try {
+        // Captura canvas da proposta
+        const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        // Ajusta imagem para largura da página mantendo proporção
+        const ratio = canvas.width / canvas.height;
+        let renderHeight = pageWidth / ratio;
+        if (renderHeight > pageHeight) {
+          // Redimensiona caso exceda altura
+          renderHeight = pageHeight;
+        }
+        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, renderHeight);
+        const safeName = proposal.clientName.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+        const filename = `proposta-${safeName}.pdf`;
+        pdf.save(filename);
+        const message = "Prezados, agradeço a oportunidade de apresentar nosso sistema de gestão e as grandes melhorias que podemos proporcionar para sua operação, como combinamos segue nossa proposta.";
+        try { await navigator.clipboard.writeText(message); } catch {}
+        const encoded = encodeURIComponent(message);
+        let opened = window.open(`whatsapp://send?text=${encoded}`, '_blank');
+        if (!opened) {
+          window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        }
+      } catch (e) {
+        console.error('Erro ao gerar PDF para WhatsApp', e);
+        alert('Não foi possível gerar o PDF automaticamente.');
+      } finally {
+        setIsPrinting(false);
+        setPdfTarget(null);
+      }
+    }, 120);
   };
 
   useEffect(() => {
@@ -1026,6 +1072,7 @@ const handleChange =
                 onReopen={handleReopenProposal}
                 onDelete={handleDeleteProposal}
                 onViewPdf={handleViewPdfFromHistory}
+                onShareWhatsApp={handleShareWhatsAppFromHistory}
               />
             </div>
           )}
