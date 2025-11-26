@@ -975,6 +975,19 @@ const handleChange =
             </button>
           </div>
 
+          {/* Hidden renderer for history PDF capture (needed while in History step) */}
+          {pdfTarget && (
+            <div className="absolute -left-[10000px] top-0">
+              <div className="w-[210mm]">
+                <ProposalPreviewEnterprise
+                  formState={pdfTarget.formState}
+                  consultantProfile={pdfTarget.consultant}
+                  captureId="history-pdf"
+                />
+              </div>
+            </div>
+          )}
+
           {history.length === 0 ? (
             <div className="text-center py-20">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 max-w-2xl mx-auto">
