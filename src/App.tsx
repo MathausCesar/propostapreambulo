@@ -326,12 +326,14 @@ const App: React.FC = () => {
 
   // PDF from history state
   const [pdfTarget, setPdfTarget] = useState<SavedProposal | null>(null);
+  const [pdfAction, setPdfAction] = useState<"print" | "share" | null>(null);
   const [isPrinting, setIsPrinting] = useState(false);
 
   const handleViewPdfFromHistory = async (id: string) => {
     const proposal = history.find((p) => p.id === id) as SavedProposal | undefined;
     if (!proposal) return;
     setIsPrinting(true);
+    setPdfAction("print");
     setPdfTarget(proposal);
   };
 
@@ -339,6 +341,7 @@ const App: React.FC = () => {
     const proposal = history.find((p) => p.id === id) as SavedProposal | undefined;
     if (!proposal) return;
     setPdfTarget(proposal);
+    setPdfAction("share");
     setIsPrinting(true);
     // Aguarda renderização oculta
     setTimeout(async () => {
@@ -375,6 +378,7 @@ const App: React.FC = () => {
       } finally {
         setIsPrinting(false);
         setPdfTarget(null);
+        setPdfAction(null);
       }
     }, 120);
   };
@@ -382,7 +386,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const printProposal = async () => {
       const el = document.getElementById("history-pdf");
-      if (!el || !pdfTarget) return;
+      if (!el || !pdfTarget || pdfAction !== "print") return;
       
       // Pega todos os estilos da página atual
       const stylesheets = Array.from(document.styleSheets);
@@ -523,6 +527,7 @@ const App: React.FC = () => {
       const printWindow = window.open('', '_blank');
       if (!printWindow) {
         setPdfTarget(null);
+        setPdfAction(null);
         return;
       }
       
@@ -552,15 +557,16 @@ const App: React.FC = () => {
         setTimeout(() => {
           printWindow.close();
           setPdfTarget(null);
+          setPdfAction(null);
           setIsPrinting(false);
         }, 500);
       }, 1000);
     };
-    if (pdfTarget) {
+    if (pdfTarget && pdfAction === "print") {
       // wait next tick for hidden renderer to mount
       setTimeout(printProposal, 50);
     }
-  }, [pdfTarget]);
+  }, [pdfTarget, pdfAction]);
 
 const handleChange =
     (field: keyof ProposalFormState) =>
