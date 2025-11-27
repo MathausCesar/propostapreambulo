@@ -189,7 +189,22 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
     }
   }
 
-  const annualTotal = monthlyTotal * 12;
+  const annualBaseTotal = monthlyTotal * 12;
+  const annualDiscountApplied = formState.annualDiscountType !== 'NONE' && formState.annualDiscountValue > 0;
+  const annualDiscountedTotal = annualDiscountApplied
+    ? (formState.annualDiscountType === 'PERCENT'
+        ? Math.max(0, annualBaseTotal * (1 - formState.annualDiscountValue / 100))
+        : Math.max(0, annualBaseTotal - formState.annualDiscountValue))
+    : annualBaseTotal;
+  // Mantém variável original para compatibilidade em cálculos linha-a-linha sem desconto por item
+  const annualTotal = annualBaseTotal;
+
+  const monthlyDiscountApplied = formState.discountType !== 'NONE' && formState.discountValue > 0;
+  const monthlyDiscountedTotal = monthlyDiscountApplied
+    ? (formState.discountType === 'PERCENT'
+        ? Math.max(0, monthlyTotal * (1 - formState.discountValue / 100))
+        : Math.max(0, monthlyTotal - formState.discountValue))
+    : monthlyTotal;
 
   // Colors and layout helpers (brand: dark blue to black header)
   return (
@@ -504,16 +519,22 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                 <div className="text-right">
                   {formState.billingCycle === "ANNUAL" ? (
                     <>
-                      <div className="text-xs text-slate-500">Total Anual</div>
-                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(annualTotal)}</div>
+                      <div className="text-xs text-slate-500">Total Anual{annualDiscountApplied && ' (com desconto)'}</div>
+                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(annualDiscountedTotal)}</div>
+                      {annualDiscountApplied && (
+                        <div className="text-xs text-red-600 line-through">De: {formatCurrency(annualTotal)}</div>
+                      )}
                       {formState.annualInstallments > 1 && (
-                        <div className="text-xs text-slate-500">Parcela: {formatCurrency(annualTotal / formState.annualInstallments)}</div>
+                        <div className="text-xs text-slate-500">Parcela: {formatCurrency(annualDiscountedTotal / formState.annualInstallments)}</div>
                       )}
                     </>
                   ) : (
                     <>
-                      <div className="text-xs text-slate-500">Total Mensal</div>
-                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
+                      <div className="text-xs text-slate-500">Total Mensal{monthlyDiscountApplied && ' (com desconto)'}</div>
+                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyDiscountedTotal)}</div>
+                      {monthlyDiscountApplied && (
+                        <div className="text-xs text-red-600 line-through">De: {formatCurrency(monthlyTotal)}</div>
+                      )}
                     </>
                   )}
                 </div>
@@ -628,9 +649,12 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                         <div><span className="text-slate-600">Desconto:</span> <strong>{formState.annualDiscountType === "PERCENT" ? `${formState.annualDiscountValue}%` : formatCurrency(formState.annualDiscountValue)}</strong></div>
                       ) : null}
                       <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
-                        <div>Valor anual: <strong className="text-slate-700">{formatCurrency(annualTotal)}</strong></div>
+                        <div>Valor anual{annualDiscountApplied && ' (com desconto)'}: <strong className="text-slate-700">{formatCurrency(annualDiscountedTotal)}</strong></div>
+                        {annualDiscountApplied && (
+                          <div className="text-red-600 line-through">De: {formatCurrency(annualTotal)}</div>
+                        )}
                         {formState.annualInstallments > 1 && (
-                          <div>Parcela: <strong className="text-slate-700">{formatCurrency(annualTotal / formState.annualInstallments)}</strong></div>
+                          <div>Parcela: <strong className="text-slate-700">{formatCurrency(annualDiscountedTotal / formState.annualInstallments)}</strong></div>
                         )}
                       </div>
                     </>
@@ -640,7 +664,10 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                         <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
                       ) : null}
                       <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
-                        <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
+                        <div>Valor mensal{monthlyDiscountApplied && ' (com desconto)'}: <strong className="text-slate-700">{formatCurrency(monthlyDiscountedTotal)}</strong></div>
+                        {monthlyDiscountApplied && (
+                          <div className="text-red-600 line-through">De: {formatCurrency(monthlyTotal)}</div>
+                        )}
                       </div>
                     </>
                   )}
