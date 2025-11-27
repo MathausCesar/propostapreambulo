@@ -514,7 +514,6 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                     <>
                       <div className="text-xs text-slate-500">Total Mensal</div>
                       <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
-                      <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
                     </>
                   )}
                 </div>
@@ -529,10 +528,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                     <th className="text-left px-4 py-3 font-semibold text-slate-700 w-2/5">Item</th>
                     <th className="text-center px-4 py-3 font-semibold text-slate-700 w-1/6">Qtd</th>
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Unitário/Pacote</th>
-                    {formState.billingCycle === "MONTHLY" && (
+                    {formState.billingCycle === "MONTHLY" ? (
                       <th className="text-right px-4 py-3 font-semibold text-slate-700">Mensal</th>
+                    ) : (
+                      <th className="text-right px-4 py-3 font-semibold text-slate-700">Anual</th>
                     )}
-                    <th className="text-right px-4 py-3 font-semibold text-slate-700">Anual</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -541,10 +541,11 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                       <td className="px-4 py-3">{it.item}</td>
                       <td className="px-4 py-3 text-center">{it.qty}</td>
                       <td className="px-4 py-3 text-right text-slate-600">{it.unit}</td>
-                      {formState.billingCycle === "MONTHLY" && (
+                      {formState.billingCycle === "MONTHLY" ? (
                         <td className="px-4 py-3 text-right font-semibold">{formatCurrency(it.monthly)}</td>
+                      ) : (
+                        <td className="px-4 py-3 text-right font-semibold text-slate-700">{formatCurrency(it.annual)}</td>
                       )}
-                      <td className="px-4 py-3 text-right font-semibold text-slate-700">{formatCurrency(it.annual)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -640,7 +641,6 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                       ) : null}
                       <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
                         <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
-                        <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>
                       </div>
                     </>
                   )}
