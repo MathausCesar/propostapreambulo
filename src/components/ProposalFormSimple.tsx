@@ -340,9 +340,40 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
       <div>
         <h3 className="text-white font-black text-xl mb-4">Condições de Pagamento</h3>
         
+        {/* Seletor de Ciclo de Pagamento */}
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-blue-200 mb-3">Ciclo de Faturamento</label>
+          <div className="grid grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() => onChange("billingCycle")({ target: { value: "MONTHLY" } } as any)}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                formState.billingCycle === "MONTHLY"
+                  ? "bg-blue-600/30 border-blue-400 text-white"
+                  : "bg-white/5 border-white/20 text-blue-200 hover:bg-white/10"
+              }`}
+            >
+              <div className="text-lg font-bold mb-1">📅 Mensal</div>
+              <div className="text-xs opacity-70">Pagamento recorrente mensal</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => onChange("billingCycle")({ target: { value: "ANNUAL" } } as any)}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                formState.billingCycle === "ANNUAL"
+                  ? "bg-blue-600/30 border-blue-400 text-white"
+                  : "bg-white/5 border-white/20 text-blue-200 hover:bg-white/10"
+              }`}
+            >
+              <div className="text-lg font-bold mb-1">📆 Anual</div>
+              <div className="text-xs opacity-70">Pagamento anual com desconto</div>
+            </button>
+          </div>
+        </div>
+        
         {/* Investimento Inicial */}
         <div className="mb-4">
-          <h4 className="text-blue-200 font-bold text-sm mb-3">Investimento Inicial</h4>
+          <h4 className="text-blue-200 font-bold text-sm mb-3">Investimento Inicial (Setup)</h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-semibold text-blue-200 mb-2">Data de Pagamento</label>
@@ -387,42 +418,94 @@ export const ProposalFormSimple: React.FC<ProposalFormProps> = ({
           </div>
         </div>
 
-        {/* Mensalidade */}
-        <div>
-          <h4 className="text-blue-200 font-bold text-sm mb-3">Mensalidade</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-blue-200 mb-2">Início da Cobrança</label>
-              <input
-                className={fieldClass}
-                type="date"
-                value={formState.firstMonthlyDate || ""}
-                onChange={onChange("firstMonthlyDate")}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-blue-200 mb-2">Desconto</label>
-              <div className="flex gap-2">
-                <select
-                  className={`${fieldClass} w-32`}
-                  value={formState.discountType}
-                  onChange={onChange("discountType")}
-                >
-                  <option value="NONE">Nenhum</option>
-                  <option value="PERCENT">%</option>
-                  <option value="VALUE">R$</option>
-                </select>
+        {/* Mensalidade (somente se ciclo MONTHLY) */}
+        {formState.billingCycle === "MONTHLY" && (
+          <div>
+            <h4 className="text-blue-200 font-bold text-sm mb-3">Mensalidade</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-blue-200 mb-2">Início da Cobrança</label>
                 <input
                   className={fieldClass}
-                  type="number"
-                  value={formState.discountValue || ''}
-                  onChange={onChange("discountValue")}
-                  placeholder="0"
+                  type="date"
+                  value={formState.firstMonthlyDate || ""}
+                  onChange={onChange("firstMonthlyDate")}
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-blue-200 mb-2">Desconto</label>
+                <div className="flex gap-2">
+                  <select
+                    className={`${fieldClass} w-32`}
+                    value={formState.discountType}
+                    onChange={onChange("discountType")}
+                  >
+                    <option value="NONE">Nenhum</option>
+                    <option value="PERCENT">%</option>
+                    <option value="VALUE">R$</option>
+                  </select>
+                  <input
+                    className={fieldClass}
+                    type="number"
+                    value={formState.discountValue || ''}
+                    onChange={onChange("discountValue")}
+                    placeholder="0"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Pagamento Anual (somente se ciclo ANNUAL) */}
+        {formState.billingCycle === "ANNUAL" && (
+          <div>
+            <h4 className="text-blue-200 font-bold text-sm mb-3">Pagamento Anual</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-blue-200 mb-2">Início da Cobrança</label>
+                <input
+                  className={fieldClass}
+                  type="date"
+                  value={formState.firstMonthlyDate || ""}
+                  onChange={onChange("firstMonthlyDate")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-blue-200 mb-2">Parcelas Anuais</label>
+                <input
+                  className={fieldClass}
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={formState.annualInstallments || 1}
+                  onChange={onChange("annualInstallments")}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-blue-200 mb-2">Desconto Anual</label>
+                <div className="flex gap-2">
+                  <select
+                    className={`${fieldClass} w-32`}
+                    value={formState.annualDiscountType}
+                    onChange={onChange("annualDiscountType")}
+                  >
+                    <option value="NONE">Nenhum</option>
+                    <option value="PERCENT">%</option>
+                    <option value="VALUE">R$</option>
+                  </select>
+                  <input
+                    className={fieldClass}
+                    type="number"
+                    value={formState.annualDiscountValue || ''}
+                    onChange={onChange("annualDiscountValue")}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* QUINTO BLOCO - Funcionalidades e Serviços Adicionais */}

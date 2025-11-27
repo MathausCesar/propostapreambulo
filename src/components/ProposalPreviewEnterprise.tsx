@@ -494,21 +494,33 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
         {/* PÁGINA 2 CONTINUAÇÃO - INVESTIMENTO */}
         <div className="investment-section page-content-group">
           
-          {/* 3. Investimento Mensal */}
+          {/* 3. Investimento Mensal ou Anual */}
           <section className="investment-table-container section-together">
             <div className="no-page-break">
               <div className="flex items-end justify-between mb-3">
                 <h2 className="text-sm font-bold uppercase tracking-widest text-slate-600 flex items-center gap-2">
-                  💰 3. Investimento Mensal
+                  💰 3. {formState.billingCycle === "ANNUAL" ? "Investimento Anual" : "Investimento Mensal"}
                 </h2>
                 <div className="text-right">
-                  <div className="text-xs text-slate-500">Total Mensal</div>
-                  <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
-                  <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+                  {formState.billingCycle === "ANNUAL" ? (
+                    <>
+                      <div className="text-xs text-slate-500">Total Anual</div>
+                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(annualTotal)}</div>
+                      {formState.annualInstallments > 1 && (
+                        <div className="text-xs text-slate-500">Parcela: {formatCurrency(annualTotal / formState.annualInstallments)}</div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-xs text-slate-500">Total Mensal</div>
+                      <div className="text-2xl font-extrabold text-green-700">{formatCurrency(monthlyTotal)}</div>
+                      <div className="text-xs text-slate-500">Anual: {formatCurrency(annualTotal)}</div>
+                    </>
+                  )}
                 </div>
               </div>
               {monthlyItems.length === 0 ? (
-                <div className="text-slate-500 italic">Nenhum item mensal configurado.</div>
+                <div className="text-slate-500 italic">Nenhum item configurado.</div>
             ) : (
             <div className="overflow-hidden rounded-lg border border-slate-200 section-together print-clean">
               <table className="investment-table w-full text-sm">
@@ -517,7 +529,9 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                     <th className="text-left px-4 py-3 font-semibold text-slate-700 w-2/5">Item</th>
                     <th className="text-center px-4 py-3 font-semibold text-slate-700 w-1/6">Qtd</th>
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Unitário/Pacote</th>
-                    <th className="text-right px-4 py-3 font-semibold text-slate-700">Mensal</th>
+                    {formState.billingCycle === "MONTHLY" && (
+                      <th className="text-right px-4 py-3 font-semibold text-slate-700">Mensal</th>
+                    )}
                     <th className="text-right px-4 py-3 font-semibold text-slate-700">Anual</th>
                   </tr>
                 </thead>
@@ -527,7 +541,9 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                       <td className="px-4 py-3">{it.item}</td>
                       <td className="px-4 py-3 text-center">{it.qty}</td>
                       <td className="px-4 py-3 text-right text-slate-600">{it.unit}</td>
-                      <td className="px-4 py-3 text-right font-semibold">{formatCurrency(it.monthly)}</td>
+                      {formState.billingCycle === "MONTHLY" && (
+                        <td className="px-4 py-3 text-right font-semibold">{formatCurrency(it.monthly)}</td>
+                      )}
                       <td className="px-4 py-3 text-right font-semibold text-slate-700">{formatCurrency(it.annual)}</td>
                     </tr>
                   ))}
@@ -601,16 +617,33 @@ export default function ProposalPreviewEnterprise({ formState, consultantProfile
                 </div>
               </div>
               <div className="rounded-xl border border-slate-200 p-5 bg-white">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Mensalidade</h3>
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">{formState.billingCycle === "ANNUAL" ? "Pagamento Anual" : "Mensalidade"}</h3>
                 <div className="text-sm space-y-2">
                   <div><span className="text-slate-600">Início da Cobrança:</span> <strong>{formState.firstMonthlyDate ? formatDate(formState.firstMonthlyDate) : "-"}</strong></div>
-                  {(formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue) ? (
-                    <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
-                  ) : null}
-                  <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
-                    <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
-                    <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>
-                  </div>
+                  {formState.billingCycle === "ANNUAL" ? (
+                    <>
+                      <div><span className="text-slate-600">Parcelas:</span> <strong>{formState.annualInstallments || 1}x</strong></div>
+                      {(formState.annualDiscountType === "PERCENT" && formState.annualDiscountValue) || (formState.annualDiscountType === "VALUE" && formState.annualDiscountValue) ? (
+                        <div><span className="text-slate-600">Desconto:</span> <strong>{formState.annualDiscountType === "PERCENT" ? `${formState.annualDiscountValue}%` : formatCurrency(formState.annualDiscountValue)}</strong></div>
+                      ) : null}
+                      <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
+                        <div>Valor anual: <strong className="text-slate-700">{formatCurrency(annualTotal)}</strong></div>
+                        {formState.annualInstallments > 1 && (
+                          <div>Parcela: <strong className="text-slate-700">{formatCurrency(annualTotal / formState.annualInstallments)}</strong></div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {(formState.discountType === "PERCENT" && formState.discountValue) || (formState.discountType === "VALUE" && formState.discountValue) ? (
+                        <div><span className="text-slate-600">Desconto:</span> <strong>{formState.discountType === "PERCENT" && formState.discountValue ? `${formState.discountValue}%` : formatCurrency(formState.discountValue)}</strong></div>
+                      ) : null}
+                      <div className="text-xs text-slate-500 mt-3 pt-2 border-t border-slate-100">
+                        <div>Valor mensal: <strong className="text-slate-700">{formatCurrency(monthlyTotal)}</strong></div>
+                        <div>Valor anual: <strong className="text-slate-700">{formatCurrency(monthlyTotal * 12)}</strong></div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

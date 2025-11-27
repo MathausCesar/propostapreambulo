@@ -21,8 +21,12 @@ export interface ProposalFormState {
   erp: ErpProduct;
   setupFee: number;
   monthlyFee: number;
+  billingCycle: "MONTHLY" | "ANNUAL";  // Ciclo de pagamento (mensal ou anual)
   discountType: "NONE" | "PERCENT" | "VALUE";
   discountValue: number;
+  annualDiscountType: "NONE" | "PERCENT" | "VALUE";  // Desconto específico para anual
+  annualDiscountValue: number;  // Valor do desconto anual
+  annualInstallments: number;  // Parcelas para pagamento anual
   firstPaymentDate: string;       // yyyy-mm-dd
   firstMonthlyDate: string;       // yyyy-mm-dd
   proposalValidityDays: number;   // validade da proposta em dias
