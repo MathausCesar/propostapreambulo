@@ -202,8 +202,26 @@ const App: React.FC = () => {
     }
 
     const now = new Date().toISOString();
-    const monthlyFinal = formState.monthlyFee || 0;
-    const setupFinal = formState.setupFee || 0;
+    const monthlyFinal = monthlyTotal;
+    
+    // Calcular setup total completo (incluindo Starter, migração, extras)
+    let setupFinal = formState.setupFee || 0;
+    
+    if (formState.implementationStarter) {
+      setupFinal += pricingRules.FIXED_PRICES.starter;
+    }
+    
+    if (formState.migrationType === "DISCOVERY" && formState.migrationProcesses) {
+      setupFinal += pricingRules.calculateMigrationDiscovery(formState.migrationProcesses);
+    } else if ((formState.migrationType === "PLANILHA_PERSONALIZADA" || formState.migrationType === "BACKUP_SISTEMA") && formState.migrationHours) {
+      setupFinal += formState.migrationHours * pricingRules.FIXED_PRICES.consultingHourly;
+    }
+    
+    formState.extraServices.forEach(svc => {
+      if (svc.billing === "SETUP") {
+        setupFinal += (svc.quantity || 0) * (svc.unitPrice || 0);
+      }
+    });
 
     const newProposal: SavedProposal = {
       id: (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID() : String(Date.now()),
