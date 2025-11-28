@@ -313,29 +313,57 @@ const App: React.FC = () => {
       }
     });
 
-    const newProposal: SavedProposal = {
-      id: (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID() : String(Date.now()),
-      createdAt: now,
-      updatedAt: now,
-      erp: formState.erp,
-      clientName: formState.clientName || "Sem nome",
-      consultant: consultantProfile,
-      monthlyFinal,
-      setupFinal,
-      formState,
-    };
+    if (editingProposalId) {
+      // Atualizar proposta existente
+      setHistory((prev) => {
+        const next = prev.map(p => 
+          p.id === editingProposalId 
+            ? {
+                ...p,
+                updatedAt: now,
+                erp: formState.erp,
+                clientName: formState.clientName || "Sem nome",
+                consultant: consultantProfile,
+                monthlyFinal,
+                setupFinal,
+                formState,
+              }
+            : p
+        );
+        try {
+          localStorage.setItem("proposalsHistory", JSON.stringify(next));
+        } catch (e) {
+          console.error("Erro ao salvar histórico", e);
+        }
+        return next;
+      });
+      alert("Proposta atualizada com sucesso!");
+      setEditingProposalId(null);
+    } else {
+      // Criar nova proposta
+      const newProposal: SavedProposal = {
+        id: (crypto && (crypto as any).randomUUID) ? (crypto as any).randomUUID() : String(Date.now()),
+        createdAt: now,
+        updatedAt: now,
+        erp: formState.erp,
+        clientName: formState.clientName || "Sem nome",
+        consultant: consultantProfile,
+        monthlyFinal,
+        setupFinal,
+        formState,
+      };
 
-    setHistory((prev) => {
-      const next = [...prev, newProposal];
-      try {
-        localStorage.setItem("proposalsHistory", JSON.stringify(next));
-      } catch (e) {
-        console.error("Erro ao salvar histórico", e);
-      }
-      return next;
-    });
-
-    alert("Proposta salva com sucesso!");
+      setHistory((prev) => {
+        const next = [...prev, newProposal];
+        try {
+          localStorage.setItem("proposalsHistory", JSON.stringify(next));
+        } catch (e) {
+          console.error("Erro ao salvar histórico", e);
+        }
+        return next;
+      });
+      alert("Proposta salva com sucesso!");
+    }
   };
 
   const handleReopenProposal = (proposal: SavedProposal) => {
