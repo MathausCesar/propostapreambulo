@@ -232,6 +232,58 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ proposals, 
           </div>
         </div>
 
+        {/* Top 3 Contratos por Valor Mensal */}
+        {filteredProposals.length > 0 && (
+          (() => {
+            const topMonthlyContracts = [...filteredProposals]
+              .sort((a, b) => (b.monthlyFinal || 0) - (a.monthlyFinal || 0))
+              .slice(0, 3);
+            if (topMonthlyContracts.length === 0) return null;
+            const medals = [
+              { emoji: "🥇", from: "from-yellow-500", to: "to-amber-600", border: "border-yellow-400/40" },
+              { emoji: "🥈", from: "from-zinc-400", to: "to-slate-500", border: "border-zinc-300/30" },
+              { emoji: "🥉", from: "from-orange-700", to: "to-amber-800", border: "border-orange-500/30" },
+            ];
+            return (
+              <div className="mb-6">
+                <h2 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                  ⭐ Top 3 Contratos — Maior Valor Mensal
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {topMonthlyContracts.map((p, idx) => {
+                    const m = medals[idx];
+                    const erpName = p.erp === "OFFICE_ADV" ? "Office ADV" : p.erp === "CPJ_3C_PLUS" ? "CPJ-3C+" : p.erp;
+                    return (
+                      <div
+                        key={p.id}
+                        className={`relative overflow-hidden rounded-2xl border ${m.border} bg-gradient-to-br ${m.from} ${m.to} bg-opacity-10 backdrop-blur-xl p-5 hover:scale-[1.02] transition-transform`}
+                      >
+                        <div className="absolute -top-6 -right-6 text-7xl opacity-20 select-none">{m.emoji}</div>
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <div className="text-xs uppercase tracking-wider text-white/80">#{idx + 1} Prioridade</div>
+                            <div className="text-white font-black text-lg truncate max-w-[240px]" title={p.clientName}>{p.clientName}</div>
+                          </div>
+                          <div className="text-2xl font-extrabold text-white drop-shadow-sm">{formatCurrency(p.monthlyFinal || 0)}</div>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between text-xs text-white/80">
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 rounded-md bg-black/20 border border-white/10">{erpName}</span>
+                            <span className="px-2 py-0.5 rounded-md bg-black/20 border border-white/10">
+                              {new Date(p.createdAt).toLocaleDateString("pt-BR")}
+                            </span>
+                          </div>
+                          <div className="opacity-90">Mensal</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()
+        )}
+
         {/* Cards de Métricas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {/* Total de Propostas */}
