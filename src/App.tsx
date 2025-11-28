@@ -34,9 +34,10 @@ import {
   CPJ3C_PLANS,
 } from "./utils/pricingPlans";
 import IntroScreen from "./components/IntroScreen";
+import PerformanceDashboard from "./components/PerformanceDashboard";
 
 // Navigation state machine types
-type AppStep = "intro" | "setupConsultant" | "chooseErp" | "proposal" | "history";
+type AppStep = "intro" | "setupConsultant" | "chooseErp" | "proposal" | "history" | "performance";
 
 interface ConsultantProfile {
   name: string;
@@ -250,6 +251,8 @@ const App: React.FC = () => {
   };
 
   const handleGoToHistory = () => setStep("history");
+
+  const handleGoToPerformance = () => setStep("performance");
 
   const handleNewProposal = () => {
     setFormState(emptyForm);
@@ -820,6 +823,17 @@ const handleChange =
             </button>
             
             <button 
+              onClick={() => { handleGoToPerformance(); setShowNavigationMenu(false); }}
+              className="w-full flex items-center gap-3 p-3 sm:p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl transition-all duration-300 text-white text-left"
+            >
+              <span className="text-xl sm:text-2xl">📊</span>
+              <div className="min-w-0 flex-1">
+                <div className="font-semibold text-sm sm:text-base">Performance</div>
+                <div className="text-xs sm:text-sm text-blue-300/80 truncate">Indicadores e métricas</div>
+              </div>
+            </button>
+            
+            <button 
               onClick={() => { setStep("setupConsultant"); setShowNavigationMenu(false); }}
               className="w-full flex items-center gap-3 p-3 sm:p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl transition-all duration-300 text-white text-left"
             >
@@ -1165,6 +1179,18 @@ const handleChange =
             </button>
           </div>
         </div>
+      </PremiumLayout>
+    );
+  }
+
+  if (step === "performance") {
+    return (
+      <PremiumLayout onSidebarToggle={handleSidebarToggle}>
+        <NavigationMenu />
+        <PerformanceDashboard 
+          proposals={history}
+          onBack={() => setStep("intro")}
+        />
       </PremiumLayout>
     );
   }
