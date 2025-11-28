@@ -142,7 +142,97 @@ const App: React.FC = () => {
       const rawHistory = localStorage.getItem("proposalsHistory");
       if (rawHistory) {
         const parsed = JSON.parse(rawHistory) as SavedProposal[];
-        if (Array.isArray(parsed)) setHistory(parsed);
+        if (Array.isArray(parsed)) {
+          // Migração: recalcular setup e monthly para propostas antigas
+          const migrated = parsed.map(proposal => {
+            const formState = proposal.formState;
+            
+            // Recalcular monthly total
+            let monthlyTotal = 0;
+            if (formState.erp === "OFFICE_ADV") {
+              const users = formState.officeUsers || 0;
+              const tier = suggestTierByUsersFor("OFFICE_ADV", users);
+              const base = getPlanPrice("OFFICE_ADV", tier) || 0;
+              const inc = getPlanInclusions("OFFICE_ADV", tier) as any;
+              if (inc) {
+                const ex = calculateOfficeExceedances({
+                  users,
+                  publications: formState.officePublications || 0,
+                  intimation: formState.officeIntimation || 0,
+                  monitoring: formState.officeMonitoringCredits || 0,
+                  distribution: formState.officeDistributionProcesses || 0,
+                  protocol: formState.officeProtocols || 0,
+                  docs: formState.officeAiDocs || 0,
+                  includeFinance: !!formState.officeFinanceModule,
+                  planInclusions: inc,
+                });
+                monthlyTotal = base + ex.totalMonthly;
+              } else {
+                monthlyTotal = base;
+              }
+            } else if (formState.erp === "CPJ_3C_PLUS") {
+              const users = formState.cpj3cUsers || 0;
+              const tier = suggestTierByUsersFor("CPJ_3C_PLUS", users);
+              const base = getPlanPrice("CPJ_3C_PLUS", tier) || 0;
+              const inc = getPlanInclusions("CPJ_3C_PLUS", tier) as any;
+              const consulting = (formState.cpj3cConsultingHours || 0) * pricingRules.FIXED_PRICES.consultingHourly;
+              if (inc) {
+                const ex = calculateCpj3cExceedances({
+                  users,
+                  publications: formState.cpj3cPublications || 0,
+                  monitoring: formState.cpj3cMonitoringCredits || 0,
+                  distribution: formState.cpj3cDistributionProcesses || 0,
+                  protocol: formState.cpj3cProtocols || 0,
+                  docs: formState.cpj3cAiDocs || 0,
+                  planInclusions: inc,
+                });
+                monthlyTotal = base + ex.totalMonthly + consulting;
+              } else {
+                monthlyTotal = base + consulting;
+              }
+            }
+            
+            // Adicionar extras mensais
+            formState.extraServices?.forEach((svc: any) => {
+              if (svc.billing === "MONTHLY") {
+                monthlyTotal += (svc.quantity || 0) * (svc.unitPrice || 0);
+              }
+            });
+            
+            // Recalcular setup total
+            let setupTotal = formState.setupFee || 0;
+            
+            if (formState.implementationStarter) {
+              setupTotal += pricingRules.FIXED_PRICES.starter;
+            }
+            
+            if (formState.migrationType === "DISCOVERY" && formState.migrationProcesses) {
+              setupTotal += pricingRules.calculateMigrationDiscovery(formState.migrationProcesses);
+            } else if ((formState.migrationType === "PLANILHA_PERSONALIZADA" || formState.migrationType === "BACKUP_SISTEMA") && formState.migrationHours) {
+              setupTotal += formState.migrationHours * pricingRules.FIXED_PRICES.consultingHourly;
+            }
+            
+            formState.extraServices?.forEach((svc: any) => {
+              if (svc.billing === "SETUP") {
+                setupTotal += (svc.quantity || 0) * (svc.unitPrice || 0);
+              }
+            });
+            
+            return {
+              ...proposal,
+              monthlyFinal: monthlyTotal,
+              setupFinal: setupTotal,
+            };
+          });
+          
+          setHistory(migrated);
+          // Salvar versão migrada no localStorage
+          try {
+            localStorage.setItem("proposalsHistory", JSON.stringify(migrated));
+          } catch (e) {
+            console.error("Erro ao salvar histórico migrado", e);
+          }
+        }
       }
     } catch (e) {
       console.error("Erro ao carregar histórico", e);
